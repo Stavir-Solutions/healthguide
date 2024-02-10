@@ -18,3 +18,5 @@ venv/
 lib/
 include/
 bin/
+
+*.log
