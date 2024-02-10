@@ -1,15 +1,15 @@
 from flask import Flask, render_template, request
 import requests
-import openai
+import logging
 from dotenv import load_dotenv
-import os
 
 app = Flask(__name__)
 
 # Set up OpenAI API credentials
-load_dotenv()
-#openai_organization = os.getenv('OPENAI_ORGANIZATION') This one is not necessary for this App
-openai_api_key = ''
+# load_dotenv()
+logging.basicConfig(filename='application.log', level=logging.DEBUG)
+#TODO get from environment
+openai_api_key = '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'
 model_id = 'gpt-3.5-turbo'
 
 # Define the Flask route that displays the form
@@ -20,12 +20,12 @@ def index():
 # Define the Flask route that handles the form submission
 @app.route('/submit', methods=['POST'])
 def submit_form():
-    print("form submitted")
+    logging.info("form submitted")
     # Get the form data from the request
-    patient_height = request.form.get('height', '')
+    height = request.form.get('height', '')
     weight = request.form.get('weight', '')
     age = request.form.get('age', '')
-    symptoms = request.form.get('symptoms', '')
+    conditions = request.form.get('conditions', '')
     gender = request.form.get('gender', '')
     walk = request.form.get('walk', '')
     exercise = request.form.get('exercise', '')
@@ -43,9 +43,9 @@ def submit_form():
     worthless = request.form.get('worthless', '')
 
     # Construct the mytext variable based only on non-empty and non-"prefer not to say" fields
-    mytext = "Prepare some lifestyle advice for the Healthy life, for a person with the following characteristics:"
-    if patient_height:
-        mytext += f" {patient_height}cm tall"
+    mytext = "As an expert health advisor, prepare lifestyle advice for the Healthy life, for a person with the following characteristics:"
+    if height:
+        mytext += f" {height}cm tall"
     if weight:
         mytext += f" weights {weight}kg"
     if age:
@@ -84,7 +84,7 @@ def submit_form():
     if worthless:
         mytext += f"\nIn the past month, did you feel worthless? {worthless}."
 
-    print("mytext", mytext)
+    logging.debug(f"mytext{mytext}" )
 
     # Call the OpenAI API
     URL = "https://api.openai.com/v1/chat/completions"
@@ -100,17 +100,17 @@ def submit_form():
     }
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer "
+        "Authorization": f"Bearer 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"
     }
     response = requests.post(URL, headers=headers, json=payload, stream=False)
-    print("responseeeee", response)
+    logging.debug(f"response: {response}")
     
     # Process the API response and return the result
     if response.ok:
         response_data = response.json()
-        print("response_dataaaaaa", response_data)
+        logging.debug(f"response_dataaaaaa:{response_data}")
         generated_text = response_data["choices"][0]["message"]["content"].strip()
-        print("generated_textttt",generated_text)
+        logging.debug(f"generated_text{generated_text}")
         
         # Render the result template
         return render_template('results.html', generated_text=generated_text)
