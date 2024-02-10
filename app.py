@@ -9,7 +9,7 @@ app = Flask(__name__)
 # load_dotenv()
 logging.basicConfig(filename='application.log', level=logging.DEBUG)
 #TODO get from environment
-openai_api_key = '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'
+openai_api_key = ''
 model_id = 'gpt-3.5-turbo'
 
 # Define the Flask route that displays the form
@@ -100,7 +100,7 @@ def submit_form():
     }
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer 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"
+        "Authorization": f"Bearer {openai_api_key}"
     }
     response = requests.post(URL, headers=headers, json=payload, stream=False)
     logging.debug(f"response: {response}")
