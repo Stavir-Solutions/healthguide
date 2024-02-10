@@ -30,7 +30,7 @@ def submit_form():
     walk = request.form.get('walk', '')
     exercise = request.form.get('exercise', '')
     fruits_veggies = request.form.get('fruits_veggies', '')
-    legumes = request.form.get('legumes', '')
+    diet = request.form.get('diet', '')
     sleep = request.form.get('sleep', '')
     sleep_reason = request.form.getlist('sleep_reason[]')
     hypertension = request.form.get('hypertension', '')
@@ -41,32 +41,50 @@ def submit_form():
     depressed = request.form.get('depressed', '')
     difficult = request.form.get('difficult', '')
     worthless = request.form.get('worthless', '')
-    smoking = request.form.get('smoking', '')
 
-
-    # Construct the mytext variable based on the form data
-    mytext = f"Prepare some lifestyle advice for the Healthy life, for a person with the following characteristics: {patient_height}cm tall weights {weight}kg and is a {age}-year-old {gender}.  This person took the following lifestyle and medical history questionnaire and next to each question is the answer obtained. Your essay please separate it into Introduction, Exercise, Sleep, Diet, Communication, Alcohol, Hobbies, Mental Health and Conclusion sections. "
-    mytext += f"\nPhysical Activity:\nHow much do you walk everyday? {walk}."
-    mytext += f"\nIn a week how many times you exercise more than 30 minutes? {exercise}."
-    mytext += f"\nDiet:\nEveryday how many portions of fruits and vegetables do you eat? {fruits_veggies}."
-    mytext += f"\nIn a week, how many portions of legumes do you eat? {legumes}."
-    mytext += f"\nSleep:\nIn the past months, how would you qualify your own sleep? {sleep}."
-    if sleep_reason:
-        mytext += "\nWhich of the following reasons apply to your sleep? Select all that apply."
-        for reason in sleep_reason:
-            mytext += f"\n- {reason}"
-    mytext += f"\nMedical History:\nHave you ever been told you have hypertension? Or are you on treatment for hypertension? {hypertension}."
-    mytext += f"\nHave you ever been told you have diabetes? Or are you on treatment for diabetes? {diabetes}."
-    mytext += f"\nDo you smoke? {smoking}."
-    mytext += f"\nHow much alcohol do you drink per day? {alcohol}."
-    mytext += f"\nMental Health:\nIn the past month, did you feel nervous?{nervous}."
-    mytext += f"\nIn the past month, did you feel depressed and like nothing could make you feel better? {depressed}."
-    mytext += f"\nIn the past month, did you feel that anything you did was foolish?{difficult}."
-    mytext += f"\nIn the past month, did you feel worthless? {worthless}."
+    # Construct the mytext variable based only on non-empty and non-"prefer not to say" fields
+    mytext = "Prepare some lifestyle advice for the Healthy life, for a person with the following characteristics:"
+    if patient_height:
+        mytext += f" {patient_height}cm tall"
+    if weight:
+        mytext += f" weights {weight}kg"
+    if age:
+        mytext += f" and is a {age}-year-old"
+    if gender:
+        mytext += f" {gender}"
+    mytext += ". This person took the following lifestyle and medical history questionnaire and next to each question is the answer obtained. Your essay please separate it into Introduction, Exercise, Sleep, Diet, Communication, Alcohol, Hobbies, Mental Health and Conclusion sections."
+    if walk:
+        mytext += f"\nPhysical Activity:\nHow much do you walk everyday? {walk}."
+    if exercise and exercise != 'prefer not to say':
+        mytext += f"\nIn a week how many times you exercise more than 30 minutes? {exercise}."
+    if fruits_veggies:
+        mytext += f"\nDiet:\nEveryday how many portions of fruits and vegetables do you eat? {fruits_veggies}."
+    if diet and diet != 'prefer not to say':
+        mytext += f"\nThe person follows {diet} diet."
+    if sleep and sleep != 'prefer not to say':
+        mytext += f"\nSleep:\nIn the past months, how would you qualify your own sleep? {sleep}."
+        if sleep_reason:
+            mytext += "\nWhich of the following reasons apply to your sleep? Select all that apply."
+            for reason in sleep_reason:
+                mytext += f"\n- {reason}"
+    if hypertension:
+        mytext += f"\nMedical History:\nHave you ever been told you have hypertension? Or are you on treatment for hypertension? {hypertension}."
+    if diabetes:
+        mytext += f"\nHave you ever been told you have diabetes? Or are you on treatment for diabetes? {diabetes}."
+    if smoking:
+        mytext += f"\nDo you smoke? {smoking}."
+    if alcohol and alcohol != 'prefer not to say':
+        mytext += f"\nHow much alcohol do you drink per day? {alcohol}."
+    if nervous:
+        mytext += f"\nMental Health:\nIn the past month, did you feel nervous?{nervous}."
+    if depressed:
+        mytext += f"\nIn the past month, did you feel depressed and like nothing could make you feel better? {depressed}."
+    if difficult:
+        mytext += f"\nIn the past month, did you feel that anything you did was foolish?{difficult}."
+    if worthless:
+        mytext += f"\nIn the past month, did you feel worthless? {worthless}."
 
     print("mytext", mytext)
-
-    testtext = "why my cat is so cute, answer within 20 words"
 
     # Call the OpenAI API
     URL = "https://api.openai.com/v1/chat/completions"
@@ -98,6 +116,7 @@ def submit_form():
         return render_template('results.html', generated_text=generated_text)
     else:
         return "Error calling OpenAI API"
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

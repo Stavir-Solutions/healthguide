@@ -7,69 +7,75 @@
 <body>
     <h1>HealthGuide</h1>
     <form action="/healthguide/submit" method="POST" onsubmit="showLoadingSpinner()">
-        <label for="height">Height (in cm):</label>
-        <input type="number" id="height" placeholder="160" value="Default Height">
         
-        <label for="weight">Weight (in kg):</label>
-        <input type="number" id="weight" placeholder="60" value="Default Weight">
-    
         <label for="age">Age(in number):</label>
-        <input type="number" id="age" placeholder="21" value="Default Age">
+        <input type="number" id="age" placeholder="21" value="Default Age" required>
 
-        <label for="symptoms">Symptoms (in word):</label>
-        <input type="words" id="symptoms" name="symptoms" required><br>
-    
-    
         <p>Gender:</p>
         <div class="radio-group">
-          <label><input type="radio" name="gender" value="male" checked required>Male</label>
+          <label><input type="radio" name="gender" value="male"  required>Male</label>
           <label><input type="radio" name="gender" value="female" required>Female</label>
         </div>
+
+        <label for="symptoms">Symptoms (in word):</label>
+        <input type="words" id="symptoms" name="symptoms"  required><br>
+
+        <label for="height">Height (in cm):</label>
+        <input type="number" id="height" name="height">
+        
+        <label for="weight">Weight (in kg):</label>
+        <input type="number" id="weight" name="weight">
+    
+  
 
     
 <p>How much do you walk every day?</p>
 <div class="radio-group">
-  <label><input type="radio" name="walk" value="Less than 15 mins" checked required>Less than 15 mins</label>
+  <label><input type="radio" name="walk" value="Less than 15 mins" required>Less than 15 mins</label>
   <label><input type="radio" name="walk" value="Between 15-30 mins" required>Between 15-30 mins</label>
   <label><input type="radio" name="walk" value="Between 30-45 mins" required>Between 30-45 mins</label>
   <label><input type="radio" name="walk" value="Between 45-60 mins" required>Between 45-60 mins</label>
   <label><input type="radio" name="walk" value="More than 60 mins" required>More than 60 mins</label>
+  <label><input type="radio" name="walk" value="prefer not to say" checked required>prefer not to say</label>
 </div>
 
 <p>In a week how many times you exercise more than 30 minutes?</p>
 <div class="radio-group">
-  <label><input type="radio" name="exercise" value="less than 1 day" checked required>Less than 1 day</label>
+  <label><input type="radio" name="exercise" value="less than 1 day" required>Less than 1 day</label>
   <label><input type="radio" name="exercise" value="1 day" required>1 day</label>
   <label><input type="radio" name="exercise" value="2 days" required>2 days</label>
   <label><input type="radio" name="exercise" value="3 days" required>3 days</label>
   <label><input type="radio" name="exercise" value="4 days or more" required>4 days or more</label>
+  <label><input type="radio" name="exercise" value="prefer not to say" checked required>prefer not to say</label>
 </div>
 
 <div class="radio-group">
     <p>Everyday how many portions of fruits and vegetables do you eat?</p>
-    <label><input type="radio" name="fruits_veggies" value="less than 1" checked required>Less than 1</label>
+    <label><input type="radio" name="fruits_veggies" value="less than 1" required>Less than 1</label>
     <label><input type="radio" name="fruits_veggies" value="2 portions" required>2 portions</label>
     <label><input type="radio" name="fruits_veggies" value="3 portions" required>3 portions</label>
     <label><input type="radio" name="fruits_veggies" value="4 portions" required>4 portions</label>
     <label><input type="radio" name="fruits_veggies" value="5 or more portions required">5 or more portions</label>
+    <label><input type="radio" name="fruits_veggies" value="prefer not to say" checked required>prefer not to say</label>
   </div>
   
   <div class="radio-group">
-    <p>In a week, how many portions of legumes do you eat?</p>
-    <label><input type="radio" name="legumes" value="less than 1 portion per week">Less than 1 portion per week</label>
-    <label><input type="radio" name="legumes" value="1 portion" checked required>1 portion</label>
-    <label><input type="radio" name="legumes" value="2 portions" required>2 portions</label>
-    <label><input type="radio" name="legumes" value="3 portions" required>3 portions</label>
-    <label><input type="radio" name="legumes" value="4 portions" required>4 portions</label>
+    <p>The person follows (selected_diet)</p>
+    <label><input type="radio" name="diet" value="vegetarian" required>vegetarian</label>
+    <label><input type="radio" name="diet" value="eggetarian">eggetarian</label>
+    <label><input type="radio" name="diet" value="vegan" required>vegan</label>
+    <label><input type="radio" name="diet" value="non-vegetarian" required>non-vegetarian</label>
+    <label><input type="radio" name="diet" value="prefer not to say" checked required>prefer not to say</label>
   </div>
   
 
   <p>In the past month, how would you qualify your own sleep?</p>
   <div class="radio-group">
     <label><input type="radio" name="sleep" value="extremely good" required>Extremely good</label>
-    <label><input type="radio" name="sleep" value="normal" checked required>Normal</label>
+    <label><input type="radio" name="sleep" value="normal" required>Normal</label>
     <label><input type="radio" name="sleep" value="bad" required>Bad</label>
     <label><input type="radio" name="sleep" value="very bad" required>Very bad</label>
+    <label><input type="radio" name="sleep" value="prefer not to say" checked required>prefer not to say</label>
   </div>
   
 <p>Which of the following reasons apply to your sleep? Select all that apply. </p>
@@ -77,7 +83,8 @@
   <label><input type="checkbox" name="sleep_reason[]" value="I snore louder than my speaking voice" >I snore louder than my speaking voice</label><br>
   <label><input type="checkbox" name="sleep_reason[]" value="fatigue and daytime sleepiness" >Fatigue and daytime sleepiness</label><br>
   <label><input type="checkbox" name="sleep_reason[]" value="Shortness of breath during sleep" >Shortness of breath during sleep</label><br>
-  <label><input type="checkbox" name="sleep_reason[]" id="none-checkbox" value="none of the above" checked >None of the above</label><br>
+  <label><input type="checkbox" name="sleep_reason[]" id="none-checkbox" value="none of the above" >None of the above</label><br>
+  <label><input type="checkbox" name="sleep_reason[]" value="prefer not to say" checked >prefer not to say</label><br>
 </div>
         <script>
         const noneCheckbox = document.getElementById("none-checkbox");
@@ -115,64 +122,72 @@
         <p>Have you ever been told you have hypertension? Or are you on treatment for hypertension?</p>
         <div class="radio-group">
           <label><input type="radio" name="hypertension" value="yes" required>Yes</label>
-          <label><input type="radio" name="hypertension" value="no" checked required>No</label>
+          <label><input type="radio" name="hypertension" value="no" required>No</label>
+          <label><input type="radio" name="hypertension" value="prefer not to say" checked required>prefer not to say</label>
         </div>
         
         <p>Have you ever been told you have diabetes? Or are you on treatment for diabetes?</p>
         <div class="radio-group">
           <label><input type="radio" name="diabetes" value="yes" required>Yes</label>
-          <label><input type="radio" name="diabetes" value="no" checked required>No</label>
+          <label><input type="radio" name="diabetes" value="no" required>No</label>
+          <label><input type="radio" name="diabetes" value="prefer not to say" checked required>prefer not to say</label>
         </div>
         
         <p>Do you smoke?</p>
         <div class="radio-group">
           <label><input type="radio" name="smoking" value="yes" required>Yes</label>
-          <label><input type="radio" name="smoking" value="no" checked required>No</label>
+          <label><input type="radio" name="smoking" value="no" required>No</label>
+          <label><input type="radio" name="smoking" value="prefer not to say" checked required>prefer not to say</label>
         </div>
 
         <p>How much alcohol do you drink per day?</p>
         <div class="radio-group">
-          <label><input type="radio" name="alcohol" value="don't drink at all" checked required>Don't drink at all</label>
+          <label><input type="radio" name="alcohol" value="don't drink at all" required>Don't drink at all</label>
           <label><input type="radio" name="alcohol" value="less than half a cup" required>Less than half a cup</label>
           <label><input type="radio" name="alcohol" value="between half and 1 cups" required>Between half and 1 cups</label>
           <label><input type="radio" name="alcohol" value="between 1 and 2 cups" required>Between 1 and 2 cups</label>
           <label><input type="radio" name="alcohol" value="2 or more cups" required>2 or more cups</label>
-        </div
+          <label><input type="radio" name="alcohol" value="prefer not to say" checked required>prefer not to say</label>
+        </div>
 
         <p>In the past month, did you feel nervous?</p>
         <div class="radio-group">
-          <label><input type="radio" name="nervous" value="Not at all" checked required>Not at all</label>
+          <label><input type="radio" name="nervous" value="Not at all" required>Not at all</label>
           <label><input type="radio" name="nervous" value="Just a little" required>Just a little</label>
           <label><input type="radio" name="nervous" value="Sometimes" required>Sometimes</label>
           <label><input type="radio" name="nervous" value="Generally" required>Generally</label>
           <label><input type="radio" name="nervous" value="Every time" required>Every time</label>
+          <label><input type="radio" name="nervous" value="prefer not to say" checked required>prefer not to say</label>
         </div>
 
         <p>In the past month, did you feel depressed and like nothing could make you feel better?</p>
         <div class="radio-group">
-            <label><input type="radio" name="depressed" value="Not at all" checked required>Not at all</label>
+            <label><input type="radio" name="depressed" value="Not at all" required>Not at all</label>
             <label><input type="radio" name="depressed" value="Just a little" required>Just a little</label>
             <label><input type="radio" name="depressed" value="Sometimes" required>Sometimes</label>
             <label><input type="radio" name="depressed" value="Generally" required>Generally</label>
             <label><input type="radio" name="depressed" value="Every time" required>Every time</label>
+            <label><input type="radio" name="depressed" value="prefer not to say" checked required>prefer not to say</label>
         </div>
         
         <p>In the past month, did you feel that anything you did was foolish?</p>
         <div class="radio-group">
-            <label><input type="radio" name="difficult" value="Not at all" checked required>Not at all</label>
+            <label><input type="radio" name="difficult" value="Not at all" required>Not at all</label>
             <label><input type="radio" name="difficult" value="Just a little" required>Just a little</label>
             <label><input type="radio" name="difficult" value="Sometimes" required>Sometimes</label>
             <label><input type="radio" name="difficult" value="Generally" required>Generally</label>
             <label><input type="radio" name="difficult" value="Every time" required>Every time</label>
+            <label><input type="radio" name="difficult" value="prefer not to say" checked required>prefer not to say</label>
         </div>
         
         <p>In the past month, did you feel worthless?</p>
         <div class="radio-group">
-            <label><input type="radio" name="worthless" value="Not at all" checked required>Not at all</label>
+            <label><input type="radio" name="worthless" value="Not at all" required>Not at all</label>
             <label><input type="radio" name="worthless" value="Just a little" required>Just a little</label>
             <label><input type="radio" name="worthless" value="Sometimes" required>Sometimes</label>
             <label><input type="radio" name="worthless" value="Generally" required>Generally</label>
             <label><input type="radio" name="worthless" value="Every time" required>Every time</label>
+            <label><input type="radio" name="worthless" value="prefer not to say" checked required>prefer not to say</label>
         </div>
 
         <!-- Add a div with a unique ID to show the loading spinner -->
