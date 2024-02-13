@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request
 import requests
-import openai
+import logging
 from dotenv import load_dotenv
-import os
+
 
 app = Flask(__name__)
 
@@ -20,7 +20,7 @@ def index():
 # Define the Flask route that handles the form submission
 @app.route('/submit', methods=['POST'])
 def submit_form():
-    print("form submitted")
+    logging.info("form submitted")
     # Get the form data from the request
     patient_height = request.form.get('height', '')
     weight = request.form.get('weight', '')
