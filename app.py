@@ -7,8 +7,9 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 
 # Set up OpenAI API credentials
-load_dotenv()
-#openai_organization = os.getenv('OPENAI_ORGANIZATION') This one is not necessary for this App
+# load_dotenv()
+logging.basicConfig(filename='application.log', level=logging.DEBUG)
+#TODO get from environment
 openai_api_key = ''
 model_id = 'gpt-3.5-turbo'
 
@@ -87,7 +88,7 @@ def submit_form():
     if worthless:
         mytext += f"\nIn the past month, did you feel worthless? {worthless}."
 
-    print("mytext", mytext)
+    logging.debug(f"mytext{mytext}" )
 
     # Call the OpenAI API
     URL = "https://api.openai.com/v1/chat/completions"
@@ -106,14 +107,14 @@ def submit_form():
         "Authorization": f"Bearer "
     }
     response = requests.post(URL, headers=headers, json=payload, stream=False)
-    print("responseeeee", response)
+    logging.debug(f"response: {response}")
     
     # Process the API response and return the result
     if response.ok:
         response_data = response.json()
-        print("response_dataaaaaa", response_data)
+        logging.debug(f"response_dataaaaaa:{response_data}")
         generated_text = response_data["choices"][0]["message"]["content"].strip()
-        print("generated_textttt",generated_text)
+        logging.debug(f"generated_text{generated_text}")
         
         # Render the result template
         return render_template('results.html', generated_text=generated_text)
