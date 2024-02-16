@@ -20,7 +20,7 @@ jobs:
       run: |
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
-        if [ -f "red123.pem" ]; then chmod 600 "keypair.pem"; fi
+        if [ -f "red123.pem" ]; then chmod 600 "red123.pem"; fi
         
 
     - name: Update code on EC2
