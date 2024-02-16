@@ -21,9 +21,7 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         if [ -f "red123.pem" ]; then chmod 600 "red123.pem"; fi
-
-    - name: Add exception for dubious ownership
-      run: git config --global --add safe.directory /home/***/lifestyle-advisor/healthguide    
+    
 
     - name: Update code on EC2
       uses: appleboy/ssh-action@master
