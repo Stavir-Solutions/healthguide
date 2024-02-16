@@ -31,5 +31,5 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
-          cd /lifestyle-advisor/healthguide
+          cd lifestyle-advisor/healthguide
           git pull origin main
