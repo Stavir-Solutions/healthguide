@@ -33,3 +33,4 @@ jobs:
         script: |
           cd lifestyle-advisor/healthguide
           git pull origin main
+          
