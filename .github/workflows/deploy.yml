@@ -23,7 +23,7 @@ jobs:
         if [ -f "red123.pem" ]; then chmod 600 "red123.pem"; fi
 
     - name: Set up OpenAI GPT secret key
-      run: echo "export OPENAI_SECRET_KEY=${{ secrets.OPENAI_SECRET_KEY }}" >> $GITHUB_ENV
+      run: echo "OPENAI_SECRET_KEY=${{ secrets.OPENAI_SECRET_KEY }}" >> $GITHUB_ENV
 
     - name: Update code on EC2
       uses: appleboy/ssh-action@master
@@ -35,3 +35,15 @@ jobs:
         script: |
           cd lifestyle-advisor/healthguide
           git pull origin main
+
+    - name: Update OpenAI Secret Key in app.py
+      run: sed -i "s/openai_api_key = 'OPENAI_SECRET_KEY'/openai_api_key = '${{ secrets.OPENAI_SECRET_KEY }}'/" app.py
+
+    - name: Stop running Python processes
+      run: |
+        # Check for running Python processes and kill them
+        pkill -f "python3" || true  # Ignore if no processes found
+
+    - name: Run the application
+      run: |
+        nohup python3 app.py &
