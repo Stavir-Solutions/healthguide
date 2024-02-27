@@ -10,7 +10,7 @@ app = Flask(__name__)
 # load_dotenv()
 logging.basicConfig(filename='application.log', level=logging.DEBUG)
 #TODO get from environment
-openai_api_key = ''
+openai_api_key = 'OPENAI_SECRET_KEY'
 model_id = 'gpt-3.5-turbo'
 
 # Define the Flask route that displays the form
@@ -104,7 +104,7 @@ def submit_form():
     }
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer "
+        "Authorization": f"Bearer OPENAI_SECRET_KEY"
     }
     response = requests.post(URL, headers=headers, json=payload, stream=False)
     logging.debug(f"response: {response}")
