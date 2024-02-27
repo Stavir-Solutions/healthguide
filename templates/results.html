@@ -42,42 +42,19 @@
 <body>
 	<h1>Lifestyle Advisor</h1>
 	<div class="result-container">
-		{% for line in generated_text.split('\n') %}
-			{% if line.startswith('-') %}
-				<ul>
-				<li>{{ line }}</li>
-			{% else %}
-				{% if line.startswith('Introduction:') %}
-					<br><h2>{{ line }}</h2>
-				{% elif line.startswith('Home remedies:') %}
-					<br><h2>{{ line }}</h2>	
-				{% elif line.startswith('Exercise:') %}
-					<br><h2>{{ line }}</h2>
-				{% elif line.startswith('Diet:') %}
-					<br><h2>{{ line }}</h2>
-				{% elif line.startswith('Sleep:') %}
-					<br><h2>{{ line }}</h2>
-				{% elif line.startswith('Communication:') %}
-					<br><h2>{{ line }}</h2>
-				{% elif line.startswith('Hobbies:') %}
-					<br><h2>{{ line }}</h2>
-				{% elif line.startswith('Alcohol:') %}
-					<br><h2>{{ line }}</h2>
-				{% elif line.startswith('Mental Health:') %}
-					<br><h2>{{ line }}</h2>
-				{% elif line.startswith('Conclusion:') %}
-					<br><h2>{{ line }}</h2>
+		<ul>
+			{% for line in generated_text.split('\n') %}
+				{% if line.startswith('-') %}
+					<li>{{ line }}</li>
 				{% else %}
 					<p>{{ line }}</p>
 				{% endif %}
-			{% endif %}
-			{% if loop.last %}
-				</ul>
-			{% endif %}
-		{% endfor %}
+			{% endfor %}
+		</ul>
 		<div class="btn-container">
 			<button onclick="location.href='{{ url_for('index') }}'">Back to Questionnaire</button>
 		</div>
 	</div>
+	
 </body>
 </html>
