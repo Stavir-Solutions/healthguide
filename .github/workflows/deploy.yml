@@ -36,9 +36,7 @@ jobs:
           cd lifestyle-advisor/healthguide
           git pull origin main
 
-    - name: Update OpenAI Secret Key in app.py
-      run: sed -i "s/openai_api_key = 'OPENAI_SECRET_KEY'/openai_api_key = '${{ secrets.OPENAI_SECRET_KEY }}'/" app.py
-
+  
     - name: Stop running Python processes
       run: |
         # Check for running Python processes and kill them
@@ -46,4 +44,4 @@ jobs:
 
     - name: Run the application
       run: |
-        nohup python3 app.py &
+        export OPENAI_SECRET_KEY=${{ secrets.OPENAI_SECRET_KEY }} && nohup python3 app.py &
