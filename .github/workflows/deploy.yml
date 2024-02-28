@@ -21,9 +21,7 @@ jobs:
         echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         if [ -f "red123.pem" ]; then chmod 600 "red123.pem"; fi
-
-    - name: Set up OpenAI GPT secret key
-      run: echo "OPENAI_SECRET_KEY=${{ secrets.OPENAI_SECRET_KEY }}" >> $GITHUB_ENV
+    
 
     - name: Update code on EC2
       uses: appleboy/ssh-action@master
@@ -35,13 +33,4 @@ jobs:
         script: |
           cd lifestyle-advisor/healthguide
           git pull origin main
-
-  
-    - name: Stop running Python processes
-      run: |
-        # Check for running Python processes and kill them
-        pkill -f "python3" || true  # Ignore if no processes found
-
-    - name: Run the application
-      run: |
-        export "OPENAI_SECRET_KEY=${{ secrets.OPENAI_SECRET_KEY }}" && nohup python3 app.py &
+          
