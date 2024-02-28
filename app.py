@@ -105,7 +105,7 @@ def submit_form():
     }
     headers = {
         "Content-Type": "application/json",
-        "Authorization": f"Bearer {openai_api_key}"
+        "Authorization": f"Bearer {OPENAI_SECRET_KEY}"
     }
     response = requests.post(URL, headers=headers, json=payload, stream=False)
     logging.debug(f"response: {response}")
