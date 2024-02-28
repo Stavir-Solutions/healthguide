@@ -1,60 +1,87 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Results</title>
-	<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
-	<style>
-		.result-container {
-			margin: 50px;
-			padding: 20px;
-			background-color: #ebebeb;
-			border-radius: 10px;
-			box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-			text-align: center;
-		}
+    <title>Results</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='style.css') }}">
+    
+    <style>
+        .result-container {
+            margin: 50px;
+            padding: 20px;
+            background-color: #ebebeb;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
 
-		.result-container p {
-			font-weight: bold;
-			margin-top: 20px;
-			margin-bottom: 10px;
-		}
+        .result-container p {
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
 
-		.btn-container {
-			margin-top: 20px;
-			text-align: center;
-		}
+        .btn-container {
+            margin-top: 20px;
+            text-align: center;
+        }
 
-		.btn-container button {
-			background-color: #0072c6;
-			color: #fff;
-			border: none;
-			padding: 10px 20px;
-			border-radius: 5px;
-			margin-top: 20px;
-			cursor: pointer;
-		}
+        .btn-container button {
+            background-color: #0072c6;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
 
-		.btn-container button:hover {
-			background-color: #005bac;
-		}
-	</style>
+        .btn-container button:hover {
+            background-color: #005bac;
+        }
+    </style>
 </head>
 <body>
-	<h1>Lifestyle Advisor</h1>
-	<div class="result-container">
-		<ul>
-			{% for line in generated_text.split('\n') %}
-				{% if line.startswith('-') %}
-					<li>{{ line }}</li>
-				{% else %}
-					<p>{{ line }}</p>
-				{% endif %}
-			{% endfor %}
-		</ul>
-		<div class="btn-container">
-			<button onclick="location.href='{{ url_for('index') }}'">Back to Questionnaire</button>
-		</div>
-	</div>
+    <h1>Lifestyle Advisor</h1>
+    <div class="result-container">
+        <ul id="advice-list">
+            {% for line in generated_text.split('\n') %}
+                {% if line.startswith('-') %}
+                    <li>{{ line }}</li>
+                {% else %}
+                    <p>{{ line }}</p>
+                {% endif %}
+            {% endfor %}
+        </ul>
+        <div class="btn-container">
+            <!-- Update the 'More' button with an id attribute -->
+            <button id="more-button" onclick="showNextAdvice()">More</button>
+            <button onclick="location.href='{{ url_for('index') }}'">Back to Questionnaire</button>
+        </div>
+    </div>
+
+    <script>
+		// Counter to keep track of the number of advices shown
+		var adviceCounter = 0;
 	
+		function showNextAdvice() {
+			// Increment the counter by 10
+			adviceCounter += 10;
+	
+			// Select the advice list
+			var adviceList = document.getElementById("advice-list");
+	
+			// Show the next 10 advices
+			for (var i = adviceCounter; i < adviceCounter + 10; i++) {
+				// Check if advice exists at index i
+				if (adviceList.children[i]) {
+					adviceList.children[i].style.display = "block";
+				} else {
+					// If no more advices available, hide the 'More' button
+					document.getElementById("more-button").style.display = "none";
+					break;
+				}
+			}
+		}
+	</script>
 </body>
 </html>
