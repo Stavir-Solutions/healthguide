@@ -19,6 +19,12 @@ model_id = 'gpt-3.5-turbo'
 def index():
     return render_template('form.html')
 
+# Define the route for /hello
+@app.route('/hello')
+def hello():
+    return 'hi'
+
+
 # Define the Flask route that handles the form submission
 @app.route('/submit', methods=['POST'])
 def submit_form():
