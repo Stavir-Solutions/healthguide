@@ -44,4 +44,5 @@ jobs:
 
     - name: Run the application
       run: |
-        export "OPENAI_SECRET_KEY=${{ secrets.OPENAI_SECRET_KEY }}" && nohup python3 app.py &
+        cd
+        echo "OPENAI_SECRET_KEY=${{ secrets.OPENAI_SECRET_KEY }}" >> ~/lifestyle-advisor/healthguide/app.py && nohup python3 app.py &
