@@ -131,3 +131,44 @@ def submit_form():
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
+
+
+# Define the route for /more-results
+@app.route('/more-results', methods=['POST'])
+def more_results():
+    logging.info("More results requested")
+
+    # Construct the prompt for the ChatGPT API
+    prompt = "give 10 more results"
+    
+
+    # Call the OpenAI API
+    URL = "https://api.openai.com/v1/chat/completions"
+    payload = {
+        "model": "gpt-3.5-turbo",
+        "messages": [{"role": "user", "content": prompt}],
+        "temperature" : 1.0,
+        "top_p":0.7,
+        "n" : 1,
+        "stream": False,
+        "presence_penalty":0,
+        "frequency_penalty":0,
+    }
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {openai_api_key}"
+    }
+    response = requests.post(URL, headers=headers, json=payload, stream=False)
+    logging.debug(f"response: {response}")
+    
+    # Process the API response and return the result
+    if response.ok:
+        response_data = response.json()
+        logging.debug(f"response_dataaaaaa:{response_data}")
+        generated_text = response_data["choices"][0]["message"]["content"].strip()
+        logging.debug(f"generated_text{generated_text}")
+        
+        # Render the result template
+        return render_template('more_results', generated_text=generated_text)
+    else:
+        return "Error calling OpenAI API"

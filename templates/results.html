@@ -52,9 +52,18 @@
 			{% endfor %}
 		</ul>
 		<div class="btn-container">
+            <form action="/more-results" method="POST" onsubmit="showLoadingSpinner()">
+                <input type="submit" value="MORE-RESULTS">
 			<button onclick="location.href='{{ url_for('index') }}'">Back to Questionnaire</button>
 		</div>
 	</div>
 	
+        
+    <script>
+        function showLoadingSpinner() {
+            // Show the loading spinner when the form is submitted
+            document.getElementById("loading-spinner").classList.remove("hidden");
+        }
+    </script>
 </body>
 </html>
