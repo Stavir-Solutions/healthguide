@@ -2,15 +2,15 @@
 <html>
 <head>
     <title>Lifestyle Advisor</title>
-    <link rel="stylesheet" type="text/css" href="healthguide/static/style.css">
+    <link rel="stylesheet" type="text/css" href="lifestyleadvise/static/style.css">
 </head>
 <body>
       <h1>Lifestyle Advisor</h1>
-      <form action="/healthguide/submit" method="POST" onsubmit="showLoadingSpinner()">
+      <form action="/lifestyleadvise/submit" method="POST" onsubmit="showLoadingSpinner()">
           
         <div class="input-groups">
           <p><label for="age">Age (in number):</label></p>
-          <input type="number" id="age" placeholder="21" value="Default Age" required>
+          <input type="number" id="age" value="Default Age" required>
       </div>
   
       
@@ -26,7 +26,7 @@
   
         
   
-          <p><label for="symptoms">Symptoms (in words):</label></p>
+          <p><label for="symptoms">Lifestyle issues or Symptoms if any:</label></p>
   <textarea id="symptoms" name="symptoms" rows="4" cols="50" required></textarea><br>
   
   <!-- Button to toggle visibility of More Details section -->

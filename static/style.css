@@ -160,3 +160,37 @@
     margin-right: 30px; /* Adjust margin between radio options */
 }
 
+
+.result-container {
+  margin: 50px;
+  padding: 20px;
+  background-color: #ebebeb;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: left ;
+}
+
+.result-container p {
+  font-weight: bold;
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+
+.btn-container {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.btn-container button {
+  background-color: #0072c6;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin-top: 20px;
+  cursor: pointer;
+}
+
+.btn-container button:hover {
+  background-color: #005bac;
+}
