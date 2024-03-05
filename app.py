@@ -57,7 +57,7 @@ def submit_form():
         # If "prefer not to say" is selected, set gender to an empty string
     if gender == 'prefer_not_to_say':
         gender = ''
-    mytext += ". This person has completed a lifestyle and medical history questionnaire, with answers provided for each question. Your task is to provide the top 10 pieces of advice in the following areas: Exercise, Sleep, Diet, Communication, Alcohol, Hobbies, Mental Health, and Conclusion. Prioritize the advice in each section based on its importance."
+    mytext += ". This person has completed a lifestyle and medical history questionnaire, with answers provided for each question. Your task is to provide the top pieces of advice in the following areas: Exercise, Sleep, Diet, Communication, Alcohol, Hobbies, Mental Health. Arrange the 10 advice randomly with order of importance. Each piece of advice should be paired with its corresponding section. "
     if walk and walk != 'I dont know':  # Exclude 'I dont know'
         mytext += f"\nPhysical Activity:\nHow much do you walk everyday? {walk}."
     if exercise and exercise != 'I dont know':  # Exclude 'I dont know'
