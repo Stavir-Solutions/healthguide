@@ -2,10 +2,80 @@
 <html>
 <head>
 	<title>Results</title>
-	<link rel="stylesheet" type="text/css" href="lifestyle-advise/static/style.css">
+	<style>
+		/* Global Styles */
+        .hidden {
+            display: none;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 70px;
+            height: 70px;
+            border: 6px solid #f4f5f6;
+            border-top-color: #252121;
+            border-radius: 50%;
+            animation: spin 1s ease-in-out infinite;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            margin-top: -35px;
+            margin-left: -35px;
+        }
+        
+        body {
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            background-color: #f5f7f8; /* Light gray background */
+            margin: 0;
+            padding: 0;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #060000; /* Dark gray text */
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .result-container {
+            margin: 50px;
+            padding: 20px;
+            background-color: #ebebeb;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        
+        .result-container p {
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        
+        .btn-container {
+            margin-top: 20px;
+            text-align: center;
+        }
+        
+        .btn-container button {
+            background-color: #44ba48;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 20px;
+            cursor: pointer;
+            display: inline-block; /* Ensure button is displayed as inline block */
+        }
+        
+        .btn-container button:hover {
+            background-color: #3a5ea7;
+        }
+	  
+	  </style>
 </head>
 <body>
-	<h1>Lifestyle Advisor</h1>
+	<h1>A few suggestions to improve ur lifestyle</h1>
 	<div class="result-container">
 		<ul>
 			{% for line in generated_text.split('\n') %}
@@ -17,9 +87,15 @@
 			{% endfor %}
 		</ul>
 		<div class="btn-container">
-			<button onclick="location.href='{{ url_for('index') }}'">Back to Questionnaire</button>
+			<button onclick="redirectToHomePage()">Try Again</button>
 		</div>
 	</div>
+
+	<script>
+		function redirectToHomePage() {
+			window.location.href = "/lifestyle-advise"; // Replace this with the URL of your home page
+		}
+	</script>
 	
 </body>
 </html>
