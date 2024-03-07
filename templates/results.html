@@ -38,12 +38,32 @@
         }
         
         .result-container {
-            margin: 50px;
+            margin: 50px auto;
             padding: 20px;
             background-color: #ebebeb;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             text-align: left;
+            max-width: 800px;
+        }
+
+        .result-card {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-card img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+
+        .result-card p {
+            font-weight: bold;
+            margin-bottom: 10px;
         }
         
         .result-container p {
@@ -59,13 +79,14 @@
         
         .btn-container button {
             background-color: #44ba48;
-            color: #fff;
+            color: #0a0e0f;
             border: none;
-            padding: 10px 20px;
+            padding: 15px 30px;
             border-radius: 5px;
             margin-top: 20px;
             cursor: pointer;
             display: inline-block; /* Ensure button is displayed as inline block */
+            font-size: 20px;
         }
         
         .btn-container button:hover {
@@ -78,13 +99,15 @@
 	<h1>A few suggestions to improve ur lifestyle</h1>
 	<div class="result-container">
 		<ul>
-			{% for line in generated_text.split('\n') %}
-				{% if line.startswith('-') %}
-					<li>{{ line }}</li>
-				{% else %}
-					<p>{{ line }}</p>
-				{% endif %}
-			{% endfor %}
+			{% for advice in generated_text.split('\n') %}
+            {% if advice.startswith('-') %}
+                <div class="result-card">
+                    <img src="{{ url_for('static', filename='diagram.png') }}" alt="Diagram">
+                    <p>{{ advice }}</p>
+                    <p>Related Text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.</p>
+                </div>
+            {% endif %}
+        {% endfor %}
 		</ul>
 		<div class="btn-container">
 			<button onclick="redirectToHomePage()">Try Again</button>
