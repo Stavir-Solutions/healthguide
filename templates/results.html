@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Results</title>
-	<style>
-		/* Global Styles */
+    <title>Results</title>
+    
+    <style>
+        /* Global Styles */
         .hidden {
             display: none;
         }
@@ -36,19 +37,31 @@
             margin-top: 40px;
             margin-bottom: 40px;
         }
-        
+
         .result-container {
-            margin: 50px;
-            padding: 20px;
-            background-color: #ebebeb;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+        }
+    
+        .result-card {
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            text-align: left;
+            width: 300px; /* Adjust the width to your desired ATM card size */
+            height: 180px; /* Adjust the height to your desired ATM card size */
+            text-align: center;
         }
         
-        .result-container p {
-            font-weight: bold;
-            margin-top: 20px;
+        .result-card h5 {
+            color: #060000;
+        }
+
+        .result-card i {
+            font-size: 50px;
             margin-bottom: 10px;
         }
         
@@ -59,33 +72,36 @@
         
         .btn-container button {
             background-color: #44ba48;
-            color: #fff;
+            color: #0a0e0f;
             border: none;
-            padding: 10px 20px;
+            padding: 15px 30px;
             border-radius: 5px;
             margin-top: 20px;
             cursor: pointer;
             display: inline-block; /* Ensure button is displayed as inline block */
+            font-size: 20px;
         }
         
         .btn-container button:hover {
             background-color: #3a5ea7;
         }
-	  
-	  </style>
+      
+    </style>
+  
 </head>
 <body>
-	<h1>A few suggestions to improve ur lifestyle</h1>
-	<div class="result-container">
-		<ul>
-			{% for line in generated_text.split('\n') %}
-				{% if line.startswith('-') %}
-					<li>{{ line }}</li>
-				{% else %}
-					<p>{{ line }}</p>
-				{% endif %}
-			{% endfor %}
-		</ul>
+    <h1>A few suggestions to improve your lifestyle</h1>
+    <div class="result-container">
+        {% for section in generated_text.split('\n') %}
+        <div class="result-card">
+            <h5>{{ section }}</h5>
+            <!-- You can include a diagram or image related to the section here -->
+            <!-- For now, I'm just displaying the section name as a placeholder -->
+            <!-- <img src="path_to_image" alt="{{ section }}"> -->
+            <p>{{ advice }}</p>
+        </div>
+        {% endfor %}
+    </div>
 		<div class="btn-container">
 			<button onclick="redirectToHomePage()">Try Again</button>
 		</div>
