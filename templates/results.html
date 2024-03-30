@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Results</title>
-	<style>
-		/* Global Styles */
+    <title>Results</title>
+    
+    <style>
+        /* Global Styles */
         .hidden {
             display: none;
         }
@@ -36,39 +37,31 @@
             margin-top: 40px;
             margin-bottom: 40px;
         }
-        
-        .result-container {
-            margin: 50px auto;
-            padding: 20px;
-            background-color: #ebebeb;
-            border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            text-align: left;
-            max-width: 800px;
-        }
 
+        .result-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: flex-start;
+        }
+    
         .result-card {
             margin-bottom: 20px;
-            padding: 20px;
+            padding: 15px;
             background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        }
-
-        .result-card img {
-            max-width: 100%;
-            border-radius: 10px;
-            margin-bottom: 10px;
-        }
-
-        .result-card p {
-            font-weight: bold;
-            margin-bottom: 10px;
+            width: 300px; /* Adjust the width to your desired ATM card size */
+            height: 180px; /* Adjust the height to your desired ATM card size */
+            text-align: center;
         }
         
-        .result-container p {
-            font-weight: bold;
-            margin-top: 20px;
+        .result-card h5 {
+            color: #060000;
+        }
+
+        .result-card i {
+            font-size: 50px;
             margin-bottom: 10px;
         }
         
@@ -92,23 +85,23 @@
         .btn-container button:hover {
             background-color: #3a5ea7;
         }
-	  
-	  </style>
+      
+    </style>
+  
 </head>
 <body>
-	<h1>A few suggestions to improve ur lifestyle</h1>
-	<div class="result-container">
-		<ul>
-			{% for advice in generated_text.split('\n') %}
-            {% if advice.startswith('-') %}
-                <div class="result-card">
-                    <img src="{{ url_for('static', filename='diagram.png') }}" alt="Diagram">
-                    <p>{{ advice }}</p>
-                    <p>Related Text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero.</p>
-                </div>
-            {% endif %}
+    <h1>A few suggestions to improve your lifestyle</h1>
+    <div class="result-container">
+        {% for section in generated_text.split('\n') %}
+        <div class="result-card">
+            <h5>{{ section }}</h5>
+            <!-- You can include a diagram or image related to the section here -->
+            <!-- For now, I'm just displaying the section name as a placeholder -->
+            <!-- <img src="path_to_image" alt="{{ section }}"> -->
+            <p>{{ advice }}</p>
+        </div>
         {% endfor %}
-		</ul>
+    </div>
 		<div class="btn-container">
 			<button onclick="redirectToHomePage()">Try Again</button>
 		</div>
