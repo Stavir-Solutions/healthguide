@@ -20,3 +20,5 @@ include/
 bin/
 
 *.log
+
+.idea

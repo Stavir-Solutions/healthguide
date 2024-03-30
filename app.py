@@ -10,9 +10,12 @@ app = Flask(__name__)
 # Set up OpenAI API credentials
 # load_dotenv()
 logging.basicConfig(filename='application.log', level=logging.DEBUG)
-#TODO get from environment
+
 openai_api_key = os.getenv('OPENAI_SECRET_KEY')
 model_id = 'gpt-3.5-turbo'
+cache = {}
+
+
 
 # Define the Flask route that displays the form
 @app.route('/')
@@ -91,37 +94,48 @@ def submit_form():
 
     logging.debug(f"mytext{mytext}" )
 
-    # Call the OpenAI API
-    URL = "https://api.openai.com/v1/chat/completions"
-    payload = {
-        "model": "gpt-3.5-turbo",
-        "messages": [{"role": "user", "content": mytext}],
-        "temperature" : 1.0,
-        "top_p":0.7,
-        "n" : 1,
-        "stream": False,
-        "presence_penalty":0,
-        "frequency_penalty":0,
-    }
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {openai_api_key}"
-    }
-    response = requests.post(URL, headers=headers, json=payload, stream=False)
-    logging.debug(f"response: {response}")
-    
-    # Process the API response and return the result
-    if response.ok:
-        response_data = response.json()
-        logging.debug(f"response_dataaaaaa:{response_data}")
-        generated_text = response_data["choices"][0]["message"]["content"].strip()
-        logging.debug(f"generated_text{generated_text}")
-        
-        # Render the result template
-        return render_template('results.html', generated_text=generated_text)
+
+
+    result = None
+
+    if mytext in cache:
+        logging.info("Cache hit")
+        result = cache[mytext]
+
     else:
-        return "Error calling OpenAI API"
+        # Call the OpenAI API
+        URL = "https://api.openai.com/v1/chat/completions"
+        payload = {
+            "model": "gpt-3.5-turbo",
+            "messages": [{"role": "user", "content": mytext}],
+            "temperature": 1.0,
+            "top_p": 0.7,
+            "n": 1,
+            "stream": False,
+            "presence_penalty": 0,
+            "frequency_penalty": 0,
+        }
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {openai_api_key}"
+        }
+        response = requests.post(URL, headers=headers, json=payload, stream=False)
+        logging.debug(f"response: {response}")
+        # Process the API response and return the result
+        if response.ok:
+            response_data = response.json()
+            logging.debug(f"response_dataaaaaa:{response_data}")
+            generated_text = response_data["choices"][0]["message"]["content"].strip()
+            logging.debug(f"generated_text{generated_text}")
+            cache[mytext] = response_data["choices"][0]["message"]["content"].strip();
+
+            # Render the result template
+            result = render_template('results.html', generated_text=generated_text)
+        else:
+            result = "Error calling OpenAI API"
+
+    return result
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=80, debug=True)

@@ -2,11 +2,11 @@
 <html>
 <head>
     <title>Lifestyle Advisor</title>
-    <link rel="stylesheet" type="text/css" href="lifestyle-advise/static/style.css">
+    <link rel="stylesheet" type="text/css" href="static/style.css">
 </head>
 <body>
       <h1>Lifestyle Advisor</h1>
-      <form action="/lifestyle-advise/submit" method="POST" onsubmit="showLoadingSpinner()">
+      <form action="submit" method="POST" onsubmit="showLoadingSpinner()">
 
       <!-- Animation code -->
 
@@ -14,7 +14,7 @@
           
         <div class="input-groups">
           <p><label for="age">Age :</label></p>
-          <input type="number" id="age" value="Default Age" required>
+          <input type="number" id="age" value="25" required>
       </div>
 
       
@@ -23,7 +23,7 @@
           <div class="radio-group">
             <label><input type="radio" name="gender" value="male"  required>Male</label>
             <label><input type="radio" name="gender" value="female" required>Female</label>
-            <label><input type="radio" name="gender" value="prefer not to say" required>prefer not to say</label>
+            <label><input type="radio" name="gender" value="prefer not to say" required checked="checked">prefer not to say</label>
           </div>
         </div>
   
@@ -31,7 +31,7 @@
         
   
           <p><label for="symptoms">Lifestyle issues or Symptoms if any:</label></p>
-  <textarea id="symptoms" name="symptoms" rows="4" cols="50" required></textarea><br>
+  <textarea id="symptoms" name="symptoms" rows="4" cols="50" required >Nothing</textarea><br>
   
   <!-- Button to toggle visibility of More Details section -->
   <button id="toggle-details" type="button" onclick="toggleDetails()">More Details</button>
