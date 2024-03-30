@@ -112,6 +112,20 @@
 			window.location.href = "/lifestyle-advise"; // Replace this with the URL of your home page
 		}
 	</script>
+
+<div class="btn-container">
+    <button id="show-more-button" onclick="showMore()">Show More</button>
+</div>
+
+<script>
+    function showMore() {
+        var cards = document.querySelectorAll(".result-card");
+        for (var i = 5; i < cards.length; i++) {
+            cards[i].style.display = "block";
+        }
+        document.getElementById("show-more-button").style.display = "none"; // Hide the "Show More" button after clicking
+    }
+</script>
 	
 </body>
 </html>
