@@ -34,6 +34,7 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           cd lifestyle-advisor/healthguide
+          sudo su
           git stash
           git pull origin main
 
