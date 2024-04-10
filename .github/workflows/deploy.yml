@@ -34,6 +34,7 @@ jobs:
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
           cd lifestyle-advisor/healthguide
+          git stash
           git pull origin main
 
   
@@ -44,5 +45,4 @@ jobs:
 
     - name: Run the application
       run: |
-        cd
-        echo "OPENAI_SECRET_KEY=${{ secrets.OPENAI_SECRET_KEY }}" >> ~/lifestyle-advisor/healthguide/app.py && nohup python3 app.py &
+        echo "openaisecretkey=${{ secrets.OPENAI_SECRET_KEY }}" > ~/lifestyle-advisor/healthguide/openapi_client.py
