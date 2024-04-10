@@ -2,11 +2,13 @@
 <html>
 <head>
     <title>Lifestyle Advisor</title>
-    <link rel="stylesheet" type="text/css" href="static/style.css">
+    <button id="loginButton" onclick="toggleLogin()">Login</button>
+
+    <link rel="stylesheet" type="text/css" href="lifestyle-advise/static/style.css">
 </head>
 <body>
       <h1>Lifestyle Advisor</h1>
-      <form action="submit" method="POST" onsubmit="showLoadingSpinner()">
+      <form action="/lifestyle-advise/submit" method="POST" onsubmit="showLoadingSpinner()">
 
       <!-- Animation code -->
 
@@ -211,27 +213,115 @@
           <input type="submit" value="Submit">
       </form>
       <script>
-          function showLoadingSpinner() {
-              // Show the loading spinner when the form is submitted
-              document.getElementById("loading-spinner").classList.remove("hidden");
-          }
-      </script>
-  
-  <script>
-    function toggleDetails() {
-        var detailsSection = document.getElementById("more-details");
-        var toggleButton = document.getElementById("toggle-details");
-  
-        if (detailsSection.style.display === "none") {
-            detailsSection.style.display = "block";
-            toggleButton.textContent = "Less Details";
-        } else {
-            detailsSection.style.display = "none";
-            toggleButton.textContent = "More Details";
+        // Check if the user has logged in before
+        var isLoggedIn = false; // Initialize isLoggedIn variable
+
+    
+        function showLoadingSpinner() {
+            // Show the loading spinner when the form is submitted
+            document.getElementById("loading-spinner").classList.remove("hidden");
         }
+    
+        function redirectToLogin() {
+            window.location.href = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=2id8ktn3o1fdnmso55kjmfl98m&redirect_uri=http://localhost:5000";
+        }
+    
+        function toggleDetails() {
+            var detailsSection = document.getElementById("more-details");
+            var toggleButton = document.getElementById("toggle-details");
+    
+            if (isLoggedIn) {
+                if (detailsSection.style.display === "none") {
+                    detailsSection.style.display = "block";
+                    toggleButton.textContent = "Less Details";
+                } else {
+                    detailsSection.style.display = "none";
+                    toggleButton.textContent = "More Details";
+                }
+            } else {
+                alert("Please login to view more details.");
+            }
+        }
+        
+        
+function toggleLogin() {
+    isLoggedIn = !isLoggedIn;
+    var loginButton = document.getElementById("loginButton");
+    
+    if (isLoggedIn) {
+        loginButton.textContent = "Logout"; window.location.href = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=2id8ktn3o1fdnmso55kjmfl98m&redirect_uri=http://localhost:5000";
+    } else {
+        loginButton.textContent = "Login";
     }
-  </script>
-  
-  </body>
-  </html>
-  
+
+    // Redirect to login page only if not logged in
+    if (!isLoggedIn) {
+        window.location.href = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=2id8ktn3o1fdnmso55kjmfl98m&redirect_uri=http://localhost:5000";
+    }
+}
+
+    </script>
+   </body>
+   </html> 
+
+    
+   <!DOCTYPE html>
+<html>
+<head>
+    <title>Login Page</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.1178.0/aws-sdk.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/amazon-cognito-identity-js/5.2.1/amazon-cognito-identity.min.js"></script>
+</head>
+<body>
+
+<h2>Login Page</h2>
+
+<input type="email" id="email" placeholder="Email"><br>
+<input type="password" id="password" placeholder="Password"><br>
+<button onclick="login()">Login</button>
+
+<script>
+    // Initialize Amazon Cognito
+    AWS.config.region = 'us-east-1';
+
+    function login() {
+        var email = $('#email').val();
+        var password = $('#password').val();
+
+        var authenticationData = {
+            Username: email,
+            Password: password,
+        };
+
+        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
+
+        var poolData = {
+            UserPoolId: 'us-east-1_9KNLru65q',
+            ClientId: '2id8ktn3o1fdnmso55kjmfl98m'
+        };
+
+        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
+
+        var userData = {
+            Username: email,
+            Pool: userPool
+        };
+
+        var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
+
+        cognitoUser.authenticateUser(authenticationDetails, {
+            onSuccess: function (result) {
+                console.log('Authentication successful');
+                // Redirect or perform any other action upon successful authentication
+            },
+            onFailure: function (err) {
+                console.error('Authentication failed', err);
+                // Handle authentication failure, such as displaying an error message
+            },
+        });
+    }
+</script>
+
+</body>
+</html>
