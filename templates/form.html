@@ -2,6 +2,10 @@
 <html>
 <head>
     <title>Lifestyle Advisor</title>
+
+    <button id="loginButton" onclick="toggleLogin()">Login</button>
+
+
     <link rel="stylesheet" type="text/css" href="lifestyle-advise/static/style.css">
 </head>
 <body>
@@ -211,27 +215,52 @@
           <input type="submit" value="Submit">
       </form>
       <script>
-          function showLoadingSpinner() {
-              // Show the loading spinner when the form is submitted
-              document.getElementById("loading-spinner").classList.remove("hidden");
-          }
-      </script>
-  
-  <script>
-    function toggleDetails() {
-        var detailsSection = document.getElementById("more-details");
-        var toggleButton = document.getElementById("toggle-details");
-  
-        if (detailsSection.style.display === "none") {
-            detailsSection.style.display = "block";
-            toggleButton.textContent = "Less Details";
+        // Check if the user has logged in before
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+    
+        function showLoadingSpinner() {
+            // Show the loading spinner when the form is submitted
+            document.getElementById("loading-spinner").classList.remove("hidden");
+        }
+    
+        function redirectToLogin() {
+            window.location.href = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=2id8ktn3o1fdnmso55kjmfl98m&redirect_uri=http://localhost:5000";
+        }
+    
+        function toggleDetails() {
+            var detailsSection = document.getElementById("more-details");
+            var toggleButton = document.getElementById("toggle-details");
+    
+            if (isLoggedIn) {
+                if (detailsSection.style.display === "none") {
+                    detailsSection.style.display = "block";
+                    toggleButton.textContent = "Less Details";
+                } else {
+                    detailsSection.style.display = "none";
+                    toggleButton.textContent = "More Details";
+                }
+            } else {
+                alert("Please login to view more details.");
+            }
+        }
+        
+        function toggleLogin() {
+        isLoggedIn = !isLoggedIn;
+        var loginButton = document.getElementById("loginButton");
+        if (isLoggedIn) {
+            loginButton.textContent = "Logout";
+            window.location.href = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=2id8ktn3o1fdnmso55kjmfl98m&redirect_uri=http://localhost:5000";
         } else {
-            detailsSection.style.display = "none";
-            toggleButton.textContent = "More Details";
+            loginButton.textContent = "Login";
         }
     }
-  </script>
-  
-  </body>
-  </html>
-  
+    
+        // Function to display welcome message and logout button after successful login
+        function onLoginSuccess(username) {
+            isLoggedIn = true;
+            localStorage.setItem('isLoggedIn', 'true'); // Update localStorage
+            var welcomeMessage = document.getElementById("welcomeMessage");
+            welcomeMessage.textContent = "Welcome, " + username;
+        }
+    </script>
+    

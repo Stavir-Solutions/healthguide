@@ -60,7 +60,9 @@
   }
 
   /* Update More Details Button */
-#toggle-details {
+  #toggle-details,
+  #loginButton,
+  #logoutButton {
   background-color: #44ba48; /* Green submit button */
   color: #0a0e0f;
   border: none;
@@ -71,7 +73,9 @@
   cursor: pointer;
 }
 
-#toggle-details:hover {
+#toggle-details:hover,
+#loginButton:hover,
+#logoutButton:hover {
   background-color: #3a5ea7; /* Darker green on hover */
 }
   
