@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Lifestyle Advisor</title>
+
     <button id="loginButton" onclick="toggleLogin()">Login</button>
 
     <link rel="stylesheet" type="text/css" href="lifestyle-advise/static/style.css">
@@ -214,9 +215,9 @@
       </form>
       <script>
         // Check if the user has logged in before
-        var isLoggedIn = false; // Initialize isLoggedIn variable
 
-    
+        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
         function showLoadingSpinner() {
             // Show the loading spinner when the form is submitted
             document.getElementById("loading-spinner").classList.remove("hidden");
@@ -224,6 +225,7 @@
     
         function redirectToLogin() {
             window.location.href = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=2id8ktn3o1fdnmso55kjmfl98m&redirect_uri=http://localhost:5000";
+
         }
     
         function toggleDetails() {
@@ -243,6 +245,16 @@
             }
         }
         
+        function toggleLogin() {
+        isLoggedIn = !isLoggedIn;
+        var loginButton = document.getElementById("loginButton");
+        if (isLoggedIn) {
+            loginButton.textContent = "Logout";
+            window.location.href = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=2id8ktn3o1fdnmso55kjmfl98m&redirect_uri=http://localhost:5000";
+        } else {
+            loginButton.textContent = "Login";
+
+        
         
 function toggleLogin() {
     isLoggedIn = !isLoggedIn;
@@ -253,6 +265,7 @@ function toggleLogin() {
     } else {
         loginButton.textContent = "Login";
     }
+
 
     // Redirect to login page only if not logged in
     if (!isLoggedIn) {
@@ -325,3 +338,5 @@ function toggleLogin() {
 
 </body>
 </html>
+
+  
