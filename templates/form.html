@@ -3,13 +3,16 @@
 <head>
     <title>Lifestyle Advisor</title>
 
-    <button id="loginButton" onclick="toggleLogin()">Login</button>
-
     <link rel="stylesheet" type="text/css" href="/static/style.css">
 </head>
 <body>
+  <form method="post" action="{{ url_for('login') }}">
+    <input type="submit" value="Login" />
+</form>
+
       <h1>Lifestyle Advisor</h1>
       <form action="/submit" method="POST" onsubmit="showLoadingSpinner()">
+
 
       <!-- Animation code 
 
@@ -269,4 +272,3 @@ function toggleLogin() {
     </script>
    </body>
    </html> 
-
