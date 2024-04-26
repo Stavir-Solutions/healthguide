@@ -39,17 +39,23 @@ def submit():
     api_response = query_openapi(build_open_api_prompt_from_user_input(request))
     return render_template('results.html', generated_text=api_response)
 
+
 @app.route("/login", methods=["GET", "POST"])
 def login():
     # Disable the login button after it's clicked
-    return redirect(aws_auth.get_sign_in_url())
+    url = aws_auth.get_sign_in_url()
+    logging.info(f"Cognito url :{ url}")
+    return redirect(url)
+
 
 @app.route("/loggedin", methods=["GET"])
 def logged_in():
+    logging.info("Logged in called")
     access_token = aws_auth.get_access_token(request.args)
     if access_token:
         session["access_token"] = access_token
-        return redirect(url_for("protected"))
+        return redirect(url_for("/"))
+        #TODO in the form if user is logged in show logout instead of login
     else:
         # Handle failed login
         return redirect(url_for("login"))
