@@ -6,10 +6,19 @@
     <link rel="stylesheet" type="text/css" href="/static/style.css">
 </head>
 <body>
-  <form method="post" action="{{ url_for('login') }}">
-    <input type="submit" value="Login" />
-</form>
   
+  
+  {% if ("is_loggedin") %}
+  <form method="post" action="{{ url_for('logout') }}">
+      <input type="submit" value="Logout" />
+  </form>
+{% else %}
+  <form method="post" action="{{ url_for('login') }}">
+      <input type="submit" value="Login" />
+  </form>
+{% endif %}
+
+
 
 
 
