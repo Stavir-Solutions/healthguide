@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, session, make_response
 from flask_awscognito import AWSCognitoAuthentication
 from flask_cors import CORS
-from flask_jwt_extended import JWTManager, set_access_cookies
+from flask import jsonify
+from flask_jwt_extended import JWTManager, set_access_cookies, get_jwt_identity
 import logging
 import requests
 from jwt.algorithms import RSAAlgorithm
@@ -27,7 +28,18 @@ app.config["SECRET_KEY"] = "AKIAYRUCY23SC7U2YXCC"
 app.config["AWS_COGNITO_REDIRECT_URL"] = "http://localhost:5000/loggedin"
 app.config["AWS_COGNITO_LOGOUT_URL"] = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com"
 app.config["AWS_COGNITO_USER_POOL_CLIENT_SECRET"] = "abdpbt9vjuuqn7rsh57mod3u6a3m244feu0cg0aoflkerkvknlj"
-app.config["JWT_PUBLIC_KEY"] = RSAAlgorithm.from_jwk
+app.config["JWT_PUBLIC_KEY"] = "RSAAlgorithm.from_jwk"
+JWT_TOKEN_LOCATION = ["cookies"]
+JWT_COOKIE_SECURE = True
+
+# We're ok to set this off, as Cognito OAuth state provides protection
+JWT_COOKIE_CSRF_PROTECT = False
+JWT_ALGORITHM = "RS256"
+JWT_IDENTITY_CLAIM = "sub"
+app.config["JWT_PRIVATE_KEY"] = ""
+#  We're using Cognito to generate keys, so this is never used
+app.config["JWT_SECRET_KEY"] = ""
+
 
 
 CORS(app)
@@ -38,7 +50,10 @@ jwt = JWTManager(app)
 
 @app.route('/')
 def home():
-     return render_template('form.html')
+     access_token = session.get("access_token")
+     logged_in = access_token  # 1. check if the token is their in session, 2. check the token is valid
+     return render_template('form.html', logged_in = logged_in )
+
 
 
 
@@ -70,19 +85,22 @@ def logged_in():
         #TODO in the form if user is logged in show logout instead of login
     else:
         # Handle failed login
-        return redirect(url_for("login"))
+        logging.error("access_token is not generated")
+        return redirect(url_for("home"))
+    
     
 
     
 
-@app.route("/logout")
-def logout():
+@app.route("/logot")
+def logot():
     session.clear()
     return redirect(url_for("home"))   
 
 
-def is_loggedin():
-    return True # Todo implement this return true if token is valid 
+
+ 
+
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

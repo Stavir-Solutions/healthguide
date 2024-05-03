@@ -8,8 +8,8 @@
 <body>
   
   
-  {% if ("is_loggedin") %}
-  <form method="post" action="{{ url_for('logout') }}">
+  {% if logged_in %}
+  <form method="post" action="{{ url_for('home') }}">
       <input type="submit" value="Logout" />
   </form>
 {% else %}
