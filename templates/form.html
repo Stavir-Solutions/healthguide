@@ -9,7 +9,7 @@
   
   
   {% if logged_in %}
-  <form method="post" action="{{ url_for('home') }}">
+  <form method="post" action="{{ url_for('logout') }}">
       <input type="submit" value="Logout" />
   </form>
 {% else %}
@@ -229,58 +229,40 @@
           <input type="submit" value="Submit">
       </form>
       <script>
-        // Check if the user has logged in before
-
-        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
         function showLoadingSpinner() {
             // Show the loading spinner when the form is submitted
             document.getElementById("loading-spinner").classList.remove("hidden");
         }
-    
-        function redirectToLogin() {
-            window.location.href = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=2id8ktn3o1fdnmso55kjmfl98m&redirect_uri=http://localhost:5000";
-
-        }
-    
-        function toggleDetails() {
-            var detailsSection = document.getElementById("more-details");
-            var toggleButton = document.getElementById("toggle-details");
-    
-            if (isLoggedIn) {
-                if (detailsSection.style.display === "none") {
-                    detailsSection.style.display = "block";
-                    toggleButton.textContent = "Less Details";
-                } else {
-                    detailsSection.style.display = "none";
-                    toggleButton.textContent = "More Details";
-                }
-            } else {
-                alert("Please login to view more details.");
-            }
-        }
-        
-    
-
-        
-        
-function toggleLogin() {
-    isLoggedIn = !isLoggedIn;
-    var loginButton = document.getElementById("loginButton");
-    
-    if (isLoggedIn) {
-        window.location.href = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=2id8ktn3o1fdnmso55kjmfl98m&redirect_uri=http://localhost:5000";
-    } else {
-        loginButton.textContent = "Logout";
-    }
-
-
-    // Redirect to login page only if not logged in
-    if (!isLoggedIn) {
-        window.location.href = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=2id8ktn3o1fdnmso55kjmfl98m&redirect_uri=http://localhost:5000";
-    }
-}
-
     </script>
+
+<script>
+  function toggleDetails() {
+      var detailsSection = document.getElementById("more-details");
+      var toggleButton = document.getElementById("toggle-details");
+
+      // Check if the user is logged in
+      var loggedIn = "{{ logged_in }}";
+
+      if (loggedIn === "False") {
+          // If not logged in, show popup and return
+          alert("Please login to view more details");
+          return;
+      }
+
+      // If logged in, toggle the visibility of details section
+      if (detailsSection.style.display === "none") {
+          detailsSection.style.display = "block";
+          toggleButton.textContent = "Less Details";
+      } else {
+          detailsSection.style.display = "none";
+          toggleButton.textContent = "More Details";
+      }
+  }
+</script>
+
+    
+      
+    
+    
    </body>
    </html> 

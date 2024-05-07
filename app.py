@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, session, m
 from flask_awscognito import AWSCognitoAuthentication
 from flask_cors import CORS
 from flask import jsonify
-from flask_jwt_extended import JWTManager, set_access_cookies, get_jwt_identity
+from flask_jwt_extended import JWTManager, jwt_required, get_jwt_identity
 import logging
 import requests
 from jwt.algorithms import RSAAlgorithm
@@ -26,7 +26,7 @@ app.config["AWS_COGNITO_USER_POOL_ID"] = "us-east-1_9KNLru65q"
 app.config["AWS_COGNITO_USER_POOL_CLIENT_ID"] = "3vve5j1t85tjp6lrheibta9eka"
 app.config["SECRET_KEY"] = "AKIAYRUCY23SC7U2YXCC"
 app.config["AWS_COGNITO_REDIRECT_URL"] = "http://localhost:5000/loggedin"
-app.config["AWS_COGNITO_LOGOUT_URL"] = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com"
+app.config["AWS_COGNITO_LOGOUT_URL"] = "http://localhost:5000"
 app.config["AWS_COGNITO_USER_POOL_CLIENT_SECRET"] = "abdpbt9vjuuqn7rsh57mod3u6a3m244feu0cg0aoflkerkvknlj"
 app.config["JWT_PUBLIC_KEY"] = "RSAAlgorithm.from_jwk"
 JWT_TOKEN_LOCATION = ["cookies"]
@@ -50,9 +50,19 @@ jwt = JWTManager(app)
 
 @app.route('/')
 def home():
-     access_token = session.get("access_token")
-     logged_in = access_token  # 1. check if the token is their in session, 2. check the token is valid
-     return render_template('form.html', logged_in = logged_in )
+    access_token = session.get("access_token")
+    logged_in = False
+    
+    if access_token:
+        try:
+            # Validate the access token
+            get_jwt_identity()
+            logged_in = False
+        except:
+            # Token is invalid
+            logged_in = True
+    
+    return render_template('form.html', logged_in=logged_in)
 
 
 
@@ -92,10 +102,12 @@ def logged_in():
 
     
 
-@app.route("/logot")
-def logot():
-    session.clear()
-    return redirect(url_for("home"))   
+@app.route("/logout", methods=["GET", "POST"])
+def logout():
+    # session.pop("access_token", None)  # Remove access token from session
+    session.clear()  # Clear Flask session
+    # Redirect to Cognito logout URL to clear the Cognito session
+    return redirect(app.config["AWS_COGNITO_LOGOUT_URL"])   
 
 
 
