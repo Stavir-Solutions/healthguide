@@ -1,4 +1,4 @@
-name: Lifestyle Advisor
+name: Lifestyle Advisor Deployment
 
 on:
   push:
@@ -22,28 +22,28 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         if [ -f "red123.pem" ]; then chmod 600 "red123.pem"; fi
 
-    - name: Set up OpenAI GPT secret key
-      run: echo "OPENAI_SECRET_KEY=${{ secrets.OPENAI_SECRET_KEY }}" >> $GITHUB_ENV
-
     - name: Update code on EC2
       uses: appleboy/ssh-action@master
       with:
-        host: ec2-34-239-195-167.compute-1.amazonaws.com
-        port: 22
+        host: ${{ secrets.HOST_DNS }}
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.EC2_SSH_KEY }}
+        port: 22
         script: |
           cd lifestyle-advisor/healthguide
           sudo su
           git stash
           git pull origin main
-
   
     - name: Stop running Python processes
       run: |
-        # Check for running Python processes and kill them
-        pkill -f "python3" || true  # Ignore if no processes found
+        pkill -f "python3" || true
 
     - name: Run the application
       run: |
-        echo "openaisecretkey=${{ secrets.OPENAI_SECRET_KEY }}" > ~/lifestyle-advisor/healthguide/openapi_client.py
+        echo "OPENAI_SECRET_KEY=${{ secrets.OPENAI_SECRET_KEY }}" >> $GITHUB_ENV
+        echo "AWS_COGNITO_DOMAIN=${{ secrets.AWS_COGNITO_DOMAIN }}" >> $GITHUB_ENV
+        echo "AWS_COGNITO_USER_POOL_ID=${{ secrets.AWS_COGNITO_USER_POOL_ID }}" >> $GITHUB_ENV
+        echo "AWS_COGNITO_USER_POOL_CLIENT_ID=${{ secrets.AWS_COGNITO_USER_POOL_CLIENT_ID }}" >> $GITHUB_ENV
+        echo "SECRET_KEY=${{ secrets.SECRET_KEY }}" >> $GITHUB_ENV
+        echo "AWS_COGNITO_USER_POOL_CLIENT_SECRET=${{ secrets.AWS_COGNITO_USER_POOL_CLIENT_SECRET }}" >> $GITHUB_ENV
