@@ -8,4 +8,10 @@ pip install Flask==2.1.2 requests==2.26.0 openai==0.10.2 python-dotenv==0.19.1
 
 pip install Werkzeug==2.0.0
 
+pip install flask_awscognito
+
+pip install flask_jwt_extended
+
+pip install flask_cors
+
 python app.py

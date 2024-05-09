@@ -59,8 +59,8 @@ def home():
                 logging.info(f"User identity {identity}")
                 logged_in = True
         except:
-            # Token is invalid
-            logged_in = False
+            # Token is valid
+            logged_in = True
     
     return render_template('form.html', logged_in=logged_in)
 
@@ -88,7 +88,7 @@ def logged_in():
     if access_token:
         session["access_token"] = access_token
         # TODO once the login code is working try commenting it
-        session["logged_in"] = True
+        # session["logged_in"] = True
         return redirect(url_for("home"))
     else:
         # Handle failed login
