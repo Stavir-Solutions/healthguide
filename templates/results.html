@@ -1,3 +1,4 @@
+User
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,7 +27,7 @@
         
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: #f5f7f8; /* Light gray background */
+            background-color: #f5f7f8; 
             margin: 0;
             padding: 0;
         }
@@ -43,17 +44,26 @@
             flex-wrap: wrap;
             justify-content: center;
             align-items: flex-start;
+            gap: 20px; 
+    margin-bottom: 20px;
         }
     
         .result-card {
+            display: flex;
+            flex-direction: row;
             margin-bottom: 20px;
             padding: 15px;
-            background-color: #fff;
+            background-color: #c1ed84;
+            border: 1px solid #c2eead;
             border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 300px; /* Adjust the width to your desired ATM card size */
-            height: 180px; /* Adjust the height to your desired ATM card size */
+            box-shadow: 0 2px 4px rgba(28, 9, 9, 0.1);
+            overflow: auto;
+            width: 300px; 
+            height: 180px; 
             text-align: center;
+
+            
+
         }
         
         .result-card h5 {
@@ -95,9 +105,7 @@
         {% for section in generated_text.split('\n') %}
         <div class="result-card">
             <h5>{{ section }}</h5>
-            <!-- You can include a diagram or image related to the section here -->
-            <!-- For now, I'm just displaying the section name as a placeholder -->
-            <!-- <img src="path_to_image" alt="{{ section }}"> -->
+            
             <p>{{ advice }}</p>
         </div>
         {% endfor %}
