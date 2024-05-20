@@ -2,13 +2,12 @@
 <html>
 <head>
     <title>Results</title>
-    
     <style>
         /* Global Styles */
         .hidden {
             display: none;
         }
-        
+
         .spinner {
             display: inline-block;
             width: 70px;
@@ -23,14 +22,14 @@
             margin-top: -35px;
             margin-left: -35px;
         }
-        
+
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
             background-color: #f5f7f8; /* Light gray background */
             margin: 0;
             padding: 0;
         }
-        
+
         h1 {
             text-align: center;
             color: #060000; /* Dark gray text */
@@ -44,7 +43,7 @@
             justify-content: center;
             align-items: flex-start;
         }
-    
+
         .result-card {
             margin: 10px; /* Adjust the margin to create gaps between the cards */
             padding: 15px;
@@ -52,24 +51,29 @@
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             width: 300px; /* Adjust the width to your desired ATM card size */
-            height: 180px; /* Adjust the height to your desired ATM card size */
-            text-align: center;
-        }
-        
-        .result-card h5 {
-            color: #060000;
+            height: auto; /* Adjust the height to fit the content */
+            text-align: left;
+            display: flex;
+            flex-direction: column;
         }
 
-        .result-card i {
-            font-size: 50px;
-            margin-bottom: 10px;
+        .result-card img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px 10px 0 0;
         }
-        
+
+        .result-card p {
+            color: #060000;
+            margin: 15px 0 0 0;
+            font-size: 16px;
+        }
+
         .btn-container {
             margin-top: 20px;
             text-align: center;
         }
-        
+
         .btn-container button {
             background-color: #44ba48;
             color: #0a0e0f;
@@ -81,49 +85,49 @@
             display: inline-block; /* Ensure button is displayed as inline block */
             font-size: 20px;
         }
-        
+
         .btn-container button:hover {
             background-color: #3a5ea7;
         }
-      
+
+        .color1 { background-color: #88e751; }
+        .color2 { background-color: #51e7e5; }
+        .color3 { background-color: #e751e7; }
+        .color4 { background-color: #e7e751; }
+        .color5 { background-color: #51e751; }
+
     </style>
-  
 </head>
 <body>
     <h1>A few suggestions to improve your lifestyle</h1>
     <div class="result-container">
-        {% for section in generated_text.split('\n') %}
-        <div class="result-card">
-            <h5>{{ section }}</h5>
-            
-            <p>{{ advice }}</p>
+        {% for i in range(generated_advice|length) %}
+        <div class="result-card color{{ i % 5 + 1 }}">
+            <img src="{{ url_for('static', filename='images/Azure_network_Services.png') }}" alt="Image Description">
+            <p>{{ generated_advice[i] }}</p>
         </div>
         {% endfor %}
     </div>
-		<div class="btn-container">
-			<button onclick="redirectToHomePage()">Try Again</button>
-		</div>
-	</div>
+    <div class="btn-container">
+        <button onclick="redirectToHomePage()">Try Again</button>
+    </div>
 
-	<script>
-		function redirectToHomePage() {
-			window.location.href = "/"; // Replace this with the URL of your home page
-		}
-	</script>
+    <div class="btn-container">
+        <button id="show-more-button" onclick="showMore()">Show More</button>
+    </div>
 
-<div class="btn-container">
-    <button id="show-more-button" onclick="showMore()">Show More</button>
-</div>
-
-<script>
-    function showMore() {
-        var cards = document.querySelectorAll(".result-card");
-        for (var i = 5; i < cards.length; i++) {
-            cards[i].style.display = "block";
+    <script>
+        function redirectToHomePage() {
+            window.location.href = "/"; // Replace this with the URL of your home page
         }
-        document.getElementById("show-more-button").style.display = "none"; // Hide the "Show More" button after clicking
-    }
-</script>
-	
+
+        function showMore() {
+            var cards = document.querySelectorAll(".result-card");
+            for (var i = 5; i < cards.length; i++) {
+                cards[i].style.display = "block";
+            }
+            document.getElementById("show-more-button").style.display = "none"; // Hide the "Show More" button after clicking
+        }
+    </script>
 </body>
 </html>
