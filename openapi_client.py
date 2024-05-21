@@ -1,24 +1,20 @@
 import logging
 import os
-
 import requests
 
 URL = "https://api.openai.com/v1/chat/completions"
-API_KEY = os.getenv('OPENAI_SECRET_KEY')
+API_KEY = os.getenv('OPENAI_SECRET_KEY')  # Ensure the environment variable is correctly set
 MODEL_ID = 'gpt-3.5-turbo'
 
 CACHE = {}
 
-
 def query_openapi(prompt):
-    print(f'cache-{CACHE}')
     if prompt in CACHE:
         logging.info("Cache hit")
         result = CACHE[prompt]
     else:
         result = invoke_openapi(prompt)
     return result
-
 
 def invoke_openapi(prompt):
     # Call the OpenAI API
@@ -30,21 +26,19 @@ def invoke_openapi(prompt):
     # Process the API response and return the result
     if response.ok:
         generated_text = response.json()["choices"][0]["message"]["content"].strip()
-        logging.debug(f"generated_text{generated_text}")
-        result = generated_text
-        CACHE[prompt] = generated_text;
+        logging.debug(f"generated_text: {generated_text}")
+        result = parse_generated_text(generated_text)
+        CACHE[prompt] = result
     else:
-        logging.error(f'Error invoking open api {response}')
+        logging.error(f'Error invoking OpenAI API: {response}')
         result = "Error calling OpenAI API"
     return result
-
 
 def build_headers():
     return {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {API_KEY}"
     }
-
 
 def build_payload(prompt):
     return {
@@ -57,3 +51,21 @@ def build_payload(prompt):
         "presence_penalty": 0,
         "frequency_penalty": 0,
     }
+
+def parse_generated_text(generated_text):
+    lines = generated_text.strip().split('\n')
+    advice_list = []
+    for line in lines:
+        parts = line.split(':')
+        if len(parts) == 2:
+            category = parts[0].strip()
+            advice = parts[1].strip()
+            advice_list.append({ category: advice})
+    return advice_list
+
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.DEBUG)
+    # Example usage
+    prompt = "Give me some lifestyle improvement tips."
+    result = query_openapi(prompt)
+    print(result)
