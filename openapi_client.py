@@ -10,6 +10,7 @@ CACHE = {}
 
 
 def query_openapi(prompt):
+    print(f'cache-{CACHE}')
     if prompt in CACHE:
         logging.info("Cache hit")
         result = CACHE[prompt]
