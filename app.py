@@ -70,6 +70,7 @@ def submit():
     logging.info("Generating lifestyle advise")
 
     api_response = query_openapi(build_open_api_prompt_from_user_input(request))
+    logging.debug(f'api_response: {api_response}')
     return render_template('results.html', generated_text=api_response)
 
 
