@@ -8,6 +8,7 @@ MODEL_ID = 'gpt-3.5-turbo'
 
 CACHE = {}
 
+
 def query_openapi(prompt):
     if prompt in CACHE:
         logging.info("Cache hit")
@@ -15,6 +16,7 @@ def query_openapi(prompt):
     else:
         result = invoke_openapi(prompt)
     return result
+
 
 def invoke_openapi(prompt):
     # Call the OpenAI API
@@ -34,11 +36,13 @@ def invoke_openapi(prompt):
         result = "Error calling OpenAI API"
     return result
 
+
 def build_headers():
     return {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {API_KEY}"
     }
+
 
 def build_payload(prompt):
     return {
@@ -52,16 +56,19 @@ def build_payload(prompt):
         "frequency_penalty": 0,
     }
 
+
 def parse_generated_text(generated_text):
     lines = generated_text.strip().split('\n')
     advice_list = []
     for line in lines:
         parts = line.split(':')
         if len(parts) == 2:
-            category = parts[0].strip()
+            category = parts[0].strip().split(' ')[1]
             advice = parts[1].strip()
-            advice_list.append({ category: advice})
+            advice_list.append({'category': category, 'advice': advice})
+    logging.info(f'advice_list {advice_list}')
     return advice_list
+
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)

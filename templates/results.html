@@ -85,23 +85,23 @@
             background-color: #3a5ea7;
         }
 
-        .bg-color-0 {
+        .bg-color-Hobbies {
             background-color: #aae2f1;
         }
 
-        .bg-color-1 {
+        .bg-color-Diet {
             background-color: #f1c3aa;
         }
 
-        .bg-color-2 {
+        .bg-color-Sleep {
             background-color: #d1f1aa;
         }
 
-        .bg-color-3 {
+        .bg-color-Exercise {
             background-color: #f1aaf1;
         }
 
-        .bg-color-4 {
+        .bg-color-Social {
             background-color: #f1e1aa;
         }
       
@@ -112,8 +112,8 @@
     <div class="result-container">
         {% if generated_text is iterable %}
             {% for section in generated_text %}
-            <div class="result-card bg-color-{{ loop.index0 % 5 }}">
-                <h5>{{ section }}</h5>
+            <div class="result-card bg-color-{{ section.category }}">
+                <h5>{{ section.advice}}</h5>
                 <!-- Additional content for each section -->
             </div>
             {% endfor %}
