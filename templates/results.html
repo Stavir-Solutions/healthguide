@@ -104,7 +104,12 @@
         .bg-color-Social {
             background-color: #f1e1aa;
         }
-      
+
+        .result-card img {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -113,6 +118,7 @@
         {% if generated_text is iterable %}
             {% for section in generated_text %}
             <div class="result-card bg-color-{{ section.category }}">
+                <img src="{{ url_for('static', filename='images/'+section.category+'.png') }}" alt="{{ section.category }}" >
                 <h5>{{ section.advice}}</h5>
                 <!-- Additional content for each section -->
             </div>
