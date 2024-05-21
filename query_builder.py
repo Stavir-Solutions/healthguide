@@ -36,6 +36,7 @@ def build_open_api_prompt_from_user_input(request):
         # If "prefer not to say" is selected, set gender to an empty string
     if gender == 'prefer_not_to_say':
         gender = ''
+    prompt += f' and having the following symptoms {symptoms}. '
     prompt += "This person has completed a lifestyle and medical history questionnaire, with answers provided for each question. Your task is to provide the top pieces of advice in the following areas: Exercise, Sleep, Diet, Communication, Alcohol, Hobbies, Mental Health. Arrange the 10 advices randomly, Prioritize the advice in each section based on its importance. Each piece of advice should be paired with its corresponding section and presented as a card."
     if walk and walk != 'I dont know':  # Exclude 'I dont know'
         prompt += f"\nPhysical Activity:\nHow much do you walk everyday? {walk}."
