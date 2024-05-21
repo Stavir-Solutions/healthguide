@@ -24,19 +24,22 @@ def build_open_api_prompt_from_user_input(request):
     worthless = request.form.get('worthless', '')
 
     # Construct the prompt variable based only on non-empty and non-"prefer not to say" fields
-    prompt = "Prepare some lifestyle advice for the Healthy life, for a person with the following characteristics:"
+    prompt = "Prepare a set of lifestyle advice for a Healthy and long living, for a person with the following characteristics:"
     if patient_height:
-        prompt += f" {patient_height}cm tall"
+        prompt += f" {patient_height}cm tall,"
     if weight:
         prompt += f" weights {weight}kg"
     if age:
-        prompt += f" and is a {age}-year-old"
+        prompt += f" and is {age}-year-old"
     if gender:
         prompt += f" {gender}"
         # If "prefer not to say" is selected, set gender to an empty string
     if gender == 'prefer_not_to_say':
         gender = ''
-    prompt += "This person has completed a lifestyle and medical history questionnaire, with answers provided for each question. Your task is to provide the top pieces of advice in the following areas: Exercise, Sleep, Diet, Communication, Alcohol, Hobbies, Mental Health. Arrange the 10 advices randomly, Prioritize the advice in each section based on its importance. Each piece of advice should be paired with its corresponding section and presented as a card."
+    prompt += f'. The person also have the following life style issues and symptoms, {symptoms}. '
+    prompt += ("This person has completed a lifestyle and medical history questionnaire, with answers provided for each question as below. "
+               "Can you provide this person with lifestyle advises in the following areas: Exercise, Sleep, Diet, Hobbies, Social life. "
+               "Give top 10 most impactful advises for this person. Provide Each piece of advice with its category and keep it up to 150 characters long.")
     if walk and walk != 'I dont know':  # Exclude 'I dont know'
         prompt += f"\nPhysical Activity:\nHow much do you walk everyday? {walk}."
     if exercise and exercise != 'I dont know':  # Exclude 'I dont know'

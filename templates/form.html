@@ -3,17 +3,32 @@
 <head>
     <title>Lifestyle Advisor</title>
 
-    <button id="loginButton" onclick="toggleLogin()">Login</button>
-
-    <link rel="stylesheet" type="text/css" href="lifestyle-advise/static/style.css">
+    <link rel="stylesheet" type="text/css" href="/static/style.css">
 </head>
 <body>
+  
+  
+  {% if logged_in %}
+  <form method="post" action="{{ url_for('logout') }}">
+      <input type="submit" value="Logout" />
+  </form>
+{% else %}
+  <form method="post" action="{{ url_for('login') }}">
+      <input type="submit" value="Login" />
+  </form>
+{% endif %}
+
+
+
+
+
       <h1>Lifestyle Advisor</h1>
-      <form action="/lifestyle-advise/submit" method="POST" onsubmit="showLoadingSpinner()">
+      <form action="/submit" method="POST" onsubmit="showLoadingSpinner()">
 
-      <!-- Animation code -->
 
-    <div class="visme_d" data-title="Untitled Project" data-url="76nwkwkx-untitled-project?fullPage=true" data-domain="forms" data-full-page="true" data-min-height="100vh" data-form-id="42685"></div><script src="https://static-bundles.visme.co/forms/vismeforms-embed.js"></script>
+      <!-- Animation code 
+
+   <div class="visme_d" data-title="Untitled Project" data-url="76nwkwkx-untitled-project?fullPage=true" data-domain="forms" data-full-page="true" data-min-height="100vh" data-form-id="42685"></div><script src="https://static-bundles.visme.co/forms/vismeforms-embed.js"></script>  -->
           
         <div class="input-groups">
           <p><label for="age">Age :</label></p>
@@ -214,129 +229,40 @@
           <input type="submit" value="Submit">
       </form>
       <script>
-        // Check if the user has logged in before
-
-        let isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
         function showLoadingSpinner() {
             // Show the loading spinner when the form is submitted
             document.getElementById("loading-spinner").classList.remove("hidden");
         }
-    
-        function redirectToLogin() {
-            window.location.href = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=2id8ktn3o1fdnmso55kjmfl98m&redirect_uri=http://localhost:5000";
-
-        }
-    
-        function toggleDetails() {
-            var detailsSection = document.getElementById("more-details");
-            var toggleButton = document.getElementById("toggle-details");
-    
-            if (isLoggedIn) {
-                if (detailsSection.style.display === "none") {
-                    detailsSection.style.display = "block";
-                    toggleButton.textContent = "Less Details";
-                } else {
-                    detailsSection.style.display = "none";
-                    toggleButton.textContent = "More Details";
-                }
-            } else {
-                alert("Please login to view more details.");
-            }
-        }
-        
-        function toggleLogin() {
-        isLoggedIn = !isLoggedIn;
-        var loginButton = document.getElementById("loginButton");
-        if (isLoggedIn) {
-            loginButton.textContent = "Logout";
-            window.location.href = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=2id8ktn3o1fdnmso55kjmfl98m&redirect_uri=http://localhost:5000";
-        } else {
-            loginButton.textContent = "Login";
-
-        
-        
-function toggleLogin() {
-    isLoggedIn = !isLoggedIn;
-    var loginButton = document.getElementById("loginButton");
-    
-    if (isLoggedIn) {
-        loginButton.textContent = "Logout"; window.location.href = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=2id8ktn3o1fdnmso55kjmfl98m&redirect_uri=http://localhost:5000";
-    } else {
-        loginButton.textContent = "Login";
-    }
-
-
-    // Redirect to login page only if not logged in
-    if (!isLoggedIn) {
-        window.location.href = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com/login?response_type=code&client_id=2id8ktn3o1fdnmso55kjmfl98m&redirect_uri=http://localhost:5000";
-    }
-}
-
     </script>
-   </body>
-   </html> 
-
-    
-   <!DOCTYPE html>
-<html>
-<head>
-    <title>Login Page</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/aws-sdk/2.1178.0/aws-sdk.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/amazon-cognito-identity-js/5.2.1/amazon-cognito-identity.min.js"></script>
-</head>
-<body>
-
-<h2>Login Page</h2>
-
-<input type="email" id="email" placeholder="Email"><br>
-<input type="password" id="password" placeholder="Password"><br>
-<button onclick="login()">Login</button>
 
 <script>
-    // Initialize Amazon Cognito
-    AWS.config.region = 'us-east-1';
+  function toggleDetails() {
+      var detailsSection = document.getElementById("more-details");
+      var toggleButton = document.getElementById("toggle-details");
 
-    function login() {
-        var email = $('#email').val();
-        var password = $('#password').val();
+      // Check if the user is logged in
+      var loggedIn = "{{ logged_in }}";
 
-        var authenticationData = {
-            Username: email,
-            Password: password,
-        };
+      if (loggedIn === "False") {
+          // If not logged in, show popup and return
+          alert("Please login to view more details");
+          return;
+      }
 
-        var authenticationDetails = new AmazonCognitoIdentity.AuthenticationDetails(authenticationData);
-
-        var poolData = {
-            UserPoolId: 'us-east-1_9KNLru65q',
-            ClientId: '2id8ktn3o1fdnmso55kjmfl98m'
-        };
-
-        var userPool = new AmazonCognitoIdentity.CognitoUserPool(poolData);
-
-        var userData = {
-            Username: email,
-            Pool: userPool
-        };
-
-        var cognitoUser = new AmazonCognitoIdentity.CognitoUser(userData);
-
-        cognitoUser.authenticateUser(authenticationDetails, {
-            onSuccess: function (result) {
-                console.log('Authentication successful');
-                // Redirect or perform any other action upon successful authentication
-            },
-            onFailure: function (err) {
-                console.error('Authentication failed', err);
-                // Handle authentication failure, such as displaying an error message
-            },
-        });
-    }
+      // If logged in, toggle the visibility of details section
+      if (detailsSection.style.display === "none") {
+          detailsSection.style.display = "block";
+          toggleButton.textContent = "Less Details";
+      } else {
+          detailsSection.style.display = "none";
+          toggleButton.textContent = "More Details";
+      }
+  }
 </script>
 
-</body>
-</html>
-
-  
+    
+      
+    
+    
+   </body>
+   </html> 
