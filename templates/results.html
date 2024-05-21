@@ -2,7 +2,6 @@
 <html>
 <head>
     <title>Results</title>
-    
     <style>
         /* Global Styles */
         .hidden {
@@ -43,12 +42,12 @@
             flex-wrap: wrap;
             justify-content: center;
             align-items: flex-start;
+            gap: 20px;
         }
     
         .result-card {
             margin-bottom: 20px;
             padding: 15px;
-            background-color: #fff;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             width: 300px; /* Adjust the width to your desired ATM card size */
@@ -85,47 +84,76 @@
         .btn-container button:hover {
             background-color: #3a5ea7;
         }
-      
+
+        .bg-color-Hobbies {
+            background-color: #aae2f1;
+        }
+
+        .bg-color-Diet {
+            background-color: #f1c3aa;
+        }
+
+        .bg-color-Sleep {
+            background-color: #d1f1aa;
+        }
+
+        .bg-color-Exercise {
+            background-color: #f1aaf1;
+        }
+
+        .bg-color-Social {
+            background-color: #f1e1aa;
+        }
+
+        .result-card img {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 5px;
+        }
     </style>
-  
 </head>
 <body>
     <h1>A few suggestions to improve your lifestyle</h1>
     <div class="result-container">
-        {% for section in generated_text.split('\n') %}
-        <div class="result-card">
-            <h5>{{ section }}</h5>
-            <!-- You can include a diagram or image related to the section here -->
-            <!-- For now, I'm just displaying the section name as a placeholder -->
-            <!-- <img src="path_to_image" alt="{{ section }}"> -->
-            <p>{{ advice }}</p>
-        </div>
-        {% endfor %}
+        {% if generated_text is iterable %}
+            {% for section in generated_text %}
+            <div class="result-card bg-color-{{ section.category }}">
+                <img src="{{ url_for('static', filename='images/'+section.category+'.png') }}" alt="{{ section.category }}" >
+                <h5>{{ section.advice}}</h5>
+                <!-- Additional content for each section -->
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="result-card bg-color-0">
+                <h5>{{ generated_text }}</h5>
+                <!-- Additional content for the single section -->
+            </div>
+        {% endif %}
     </div>
-		<div class="btn-container">
-			<button onclick="redirectToHomePage()">Try Again</button>
-		</div>
-	</div>
+    <div class="btn-container">
+        <button onclick="redirectToHomePage()">Try Again</button>
+    </div>
 
-	<script>
-		function redirectToHomePage() {
-			window.location.href = "/"; // Replace this with the URL of your home page
-		}
-	</script>
 
-<div class="btn-container">
-    <button id="show-more-button" onclick="showMore()">Show More</button>
-</div>
-
-<script>
-    function showMore() {
-        var cards = document.querySelectorAll(".result-card");
-        for (var i = 5; i < cards.length; i++) {
-            cards[i].style.display = "block";
+    <script>
+        function redirectToHomePage() {
+            window.location.href = "/"; // Replace this with the URL of your home page
         }
-        document.getElementById("show-more-button").style.display = "none"; // Hide the "Show More" button after clicking
-    }
-</script>
-	
+    </script>
+
+
+    <div class="btn-container">
+        <button id="show-more-button" onclick="showMore()">Show More</button>
+    </div>
+
+    <script>
+        function showMore() {
+            var cards = document.querySelectorAll(".result-card");
+            for (var i = 5; i < cards.length; i++) {
+                cards[i].style.display = "block";
+            }
+            document.getElementById("show-more-button").style.display = "none"; // Hide the "Show More" button after clicking
+        }
+    </script>
 </body>
 </html>
