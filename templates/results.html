@@ -46,22 +46,34 @@
         }
     
         .result-card {
+            display: flex;
             margin-bottom: 20px;
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 300px; /* Adjust the width to your desired ATM card size */
-            height: 180px; /* Adjust the height to your desired ATM card size */
-            text-align: center;
+            width: 300px; 
+            height: 180px; 
         }
         
-        .result-card h5 {
-            color: #060000;
+        .result-card img {
+            width: 45%;
+            height: 100%;
+            border-radius: 5px 0 0 5px;
+            object-fit: cover;
         }
 
-        .result-card i {
-            font-size: 50px;
-            margin-bottom: 10px;
+        .result-card .card-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center; 
+            width: 55%;
+            padding: 0 15px;
+            text-align: justify; 
+        }
+        
+        .result-card .card-content h5 {
+            color: #022c32;
+            margin: 0;
         }
         
         .btn-container {
@@ -77,38 +89,32 @@
             border-radius: 5px;
             margin-top: 20px;
             cursor: pointer;
-            display: inline-block; /* Ensure button is displayed as inline block */
+            display: inline-block; 
             font-size: 20px;
         }
         
         .btn-container button:hover {
-            background-color: #3a5ea7;
+            background-color: #a193ce;
         }
 
         .bg-color-Hobbies {
-            background-color: #aae2f1;
+            background-color: #a193ce;
         }
 
         .bg-color-Diet {
-            background-color: #f1c3aa;
+            background-color: #a193ce;
         }
 
         .bg-color-Sleep {
-            background-color: #d1f1aa;
+            background-color: #a193ce;
         }
 
         .bg-color-Exercise {
-            background-color: #f1aaf1;
+            background-color: #a193ce;
         }
 
         .bg-color-Social {
-            background-color: #f1e1aa;
-        }
-
-        .result-card img {
-            max-width: 100%;
-            max-height: 150px;
-            border-radius: 5px;
+            background-color: #a193ce;
         }
     </style>
 </head>
@@ -118,15 +124,19 @@
         {% if generated_text is iterable %}
             {% for section in generated_text %}
             <div class="result-card bg-color-{{ section.category }}">
-                <img src="{{ url_for('static', filename='images/'+section.category+'.png') }}" alt="{{ section.category }}" >
-                <h5>{{ section.advice}}</h5>
-                <!-- Additional content for each section -->
+                <img src="{{ url_for('static', filename='images/'+section.category+'.png') }}" alt="{{ section.category }}">
+                <div class="card-content">
+                    <h5>{{ section.advice }}</h5>
+                    <!-- Additional content for each section -->
+                </div>
             </div>
             {% endfor %}
         {% else %}
             <div class="result-card bg-color-0">
-                <h5>{{ generated_text }}</h5>
-                <!-- Additional content for the single section -->
+                <div class="card-content">
+                    <h5>{{ generated_text }}</h5>
+                    <!-- Additional content for the single section -->
+                </div>
             </div>
         {% endif %}
     </div>
@@ -134,13 +144,11 @@
         <button onclick="redirectToHomePage()">Try Again</button>
     </div>
 
-
     <script>
         function redirectToHomePage() {
             window.location.href = "/"; // Replace this with the URL of your home page
         }
     </script>
-
 
     <div class="btn-container">
         <button id="show-more-button" onclick="showMore()">Show More</button>
