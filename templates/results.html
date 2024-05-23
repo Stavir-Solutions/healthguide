@@ -47,19 +47,20 @@
     
         .result-card {
             display: flex;
+
+            flex-direction: row;
+            align-items: center;
+            justify-content: center; 
+
             margin-bottom: 20px;
             padding: 15px;
             border-radius: 10px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             width: 300px; 
             height: 180px; 
-        }
-        
-        .result-card img {
-            width: 45%;
-            height: 100%;
-            border-radius: 5px 0 0 5px;
-            object-fit: cover;
+
+            text-align: justify; 
+       
         }
 
         .result-card .card-content {
@@ -115,6 +116,14 @@
 
         .bg-color-Social {
             background-color: #a193ce;
+
+        }
+
+        .result-card img {
+            max-width: 100%;
+            max-height: 150px;
+            border-radius: 5px;
+
         }
     </style>
 </head>
@@ -125,10 +134,10 @@
             {% for section in generated_text %}
             <div class="result-card bg-color-{{ section.category }}">
                 <img src="{{ url_for('static', filename='images/'+section.category+'.png') }}" alt="{{ section.category }}">
-                <div class="card-content">
-                    <h5>{{ section.advice }}</h5>
-                    <!-- Additional content for each section -->
-                </div>
+
+                <h5>{{ section.advice }}</h5>
+                <!-- Additional content for each section -->
+
             </div>
             {% endfor %}
         {% else %}
