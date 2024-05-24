@@ -15,14 +15,14 @@ logging.basicConfig(filename='application.log', level=logging.DEBUG)
 
 #TODO move the secrets to github secret and access as env variables
 app.config["AWS_DEFAULT_REGION"] = "us-east-1"
-app.config["AWS_COGNITO_DOMAIN"] = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com"
-app.config["AWS_COGNITO_USER_POOL_ID"] = "us-east-1_9KNLru65q"
-app.config["AWS_COGNITO_USER_POOL_CLIENT_ID"] = "3vve5j1t85tjp6lrheibta9eka"
+app.config["AWS_COGNITO_DOMAIN"] = "https://lifestyle-advise-localhost.auth.us-east-1.amazoncognito.com"
+app.config["AWS_COGNITO_USER_POOL_ID"] = "us-east-1_C5zg86hJe"
+app.config["AWS_COGNITO_USER_POOL_CLIENT_ID"] = "6k4ac9n9qqf8jvree21njbahbp"
 app.config["SECRET_KEY"] = "AKIAYRUCY23SC7U2YXCC"
 #TODO it should be an evironment configuration
 app.config["AWS_COGNITO_REDIRECT_URL"] = "http://localhost:5000/loggedin"
 app.config["AWS_COGNITO_LOGOUT_URL"] = "http://localhost:5000"
-app.config["AWS_COGNITO_USER_POOL_CLIENT_SECRET"] = "abdpbt9vjuuqn7rsh57mod3u6a3m244feu0cg0aoflkerkvknlj"
+app.config["AWS_COGNITO_USER_POOL_CLIENT_SECRET"] = "1nefocfen0u9mjc54d1k6fqr3icimt08s3kuhn8vtvkc1nripkml"
 app.config["JWT_PUBLIC_KEY"] = "RSAAlgorithm.from_jwk"
 JWT_TOKEN_LOCATION = ["cookies"]
 JWT_COOKIE_SECURE = True
