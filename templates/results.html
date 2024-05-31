@@ -3,7 +3,6 @@
 <head>
     <title>Results</title>
     <style>
-        /* Global Styles */
         .hidden {
             display: none;
         }
@@ -25,14 +24,14 @@
         
         body {
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            background-color: #f5f7f8; /* Light gray background */
+            background-color: #f5f7f8; 
             margin: 0;
             padding: 0;
         }
         
         h1 {
             text-align: center;
-            color: #060000; /* Dark gray text */
+            color: #060000; 
             margin-top: 40px;
             margin-bottom: 40px;
         }
@@ -143,21 +142,42 @@
 
     <script>
         function redirectToHomePage() {
-            window.location.href = "/"; // Replace this with the URL of your home page
+            window.location.href = "/"; 
         }
     </script>
 
     <div class="btn-container">
-        <button id="show-more-button" onclick="showMore()">Show More</button>
+        <button id="show-more-button" onclick="showMoreWithPayload()">Show More</button>
     </div>
 
     <script>
+        function showMoreWithPayload() {
+            const payload = {{ generated_text|tojson }};
+            
+            fetch('/show-more', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response data if necessary
+                console.log('Success:', data);
+                
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+        }
+
         function showMore() {
             var cards = document.querySelectorAll(".result-card");
             for (var i = 5; i < cards.length; i++) {
                 cards[i].style.display = "block";
             }
-            document.getElementById("show-more-button").style.display = "none"; // Hide the "Show More" button after clicking
+            document.getElementById("show-more-button").style.display = "none";
         }
     </script>
 </body>
