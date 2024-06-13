@@ -4,15 +4,29 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager, get_jwt_identity
 
 import logging
+import uuid
+from datetime import datetime
+from flask_mysqldb import MySQL
+import time
 
 from openapi_client import query_openapi
 from query_builder import build_open_api_prompt_from_user_input
 
 app = Flask(__name__)
+CORS(app)
 
+# Configure MySQL
+app.config['MYSQL_HOST'] = 'colleague-db.compqog69afz.us-east-1.rds.amazonaws.com'
+app.config['MYSQL_USER'] = 'admin'
+app.config['MYSQL_PASSWORD'] = 'colleageusAtStavir'
+app.config['MYSQL_DB'] = 'lifestyle-advise'
+
+mysql = MySQL(app)
+
+# Logging configuration
 logging.basicConfig(filename='application.log', level=logging.DEBUG)
 
-# TODO: Move the secrets to environment variables
+# AWS Cognito configuration
 app.config["AWS_DEFAULT_REGION"] = "us-east-1"
 app.config["AWS_COGNITO_DOMAIN"] = "https://lifestyle-advise.auth.us-east-1.amazoncognito.com"
 app.config["AWS_COGNITO_USER_POOL_ID"] = "us-east-1_9KNLru65q"
@@ -24,14 +38,12 @@ app.config["AWS_COGNITO_USER_POOL_CLIENT_SECRET"] = "your_client_secret"
 app.config["JWT_PUBLIC_KEY"] = "RSAAlgorithm.from_jwk"
 JWT_TOKEN_LOCATION = ["cookies"]
 JWT_COOKIE_SECURE = True
-
 JWT_COOKIE_CSRF_PROTECT = False
 JWT_ALGORITHM = "RS256"
 JWT_IDENTITY_CLAIM = "sub"
 app.config["JWT_PRIVATE_KEY"] = ""
 app.config["JWT_SECRET_KEY"] = ""
 
-CORS(app)
 aws_auth = AWSCognitoAuthentication(app)
 jwt = JWTManager(app)
 
@@ -57,8 +69,38 @@ def home():
 @app.route('/submit', methods=['POST'])
 def submit():
     logging.info("Generating lifestyle advice")
-
-    api_response = query_openapi(build_open_api_prompt_from_user_input(request))
+    
+    user_id = session.get("user_id")  # Assuming user_id is stored in session after login
+    form_input = request.form.to_dict()  # Get the form input data
+    query_id = str(uuid.uuid4())  # Generate a UUID for the query
+    timestamp = datetime.utcnow()  # Get the current timestamp
+    
+    # Start timing the query
+    start_time = time.time()
+    
+    try:
+        # Generate lifestyle advice
+        api_response = query_openapi(build_open_api_prompt_from_user_input(request))
+        query_status = 'success'
+    except Exception as e:
+        logging.error(f"Error during API query: {e}")
+        api_response = ''
+        query_status = 'failure'
+    
+    # End timing the query
+    end_time = time.time()
+    time_taken = end_time - start_time
+    cache_hit = False  
+    
+    cursor = mysql.connection.cursor()
+    insert_query = """
+        INSERT INTO user_query_audit (id, timestamp, user_id, form_input, query_status, time_taken, cache_hit)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
+    """
+    cursor.execute(insert_query, (query_id, timestamp, user_id, str(form_input), query_status, time_taken, cache_hit))
+    mysql.connection.commit()
+    cursor.close()
+    
     logging.debug(f'api_response: {api_response}')
     return render_template('results.html', generated_text=api_response)
 
